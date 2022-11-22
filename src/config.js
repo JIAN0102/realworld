@@ -1,3 +1,3 @@
 export const CONFIG = {
-  API_HOST: 'https://api.realworld.io/api',
+  API_HOST: 'https://api.realworld.io',
 };
