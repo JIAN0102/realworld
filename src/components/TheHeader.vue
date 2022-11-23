@@ -4,7 +4,7 @@
       <router-link
         class="navbar-brand"
         :to="{
-          name: 'home',
+          name: 'global-feed',
         }"
       >
         conduit
@@ -15,7 +15,7 @@
             class="nav-link"
             active-class="active"
             :to="{
-              name: 'home',
+              name: 'global-feed',
             }"
           >
             Home
@@ -27,15 +27,37 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">
+          <router-link
+            class="nav-link"
+            active-class="active"
+            :to="{
+              name: 'settings',
+            }"
+          >
             <i class="ion-gear-a"></i>&nbsp;Settings
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">Sign in</a>
+          <router-link
+            class="nav-link"
+            active-class="active"
+            :to="{
+              name: 'login',
+            }"
+          >
+            Sign in
+          </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">Sign up</a>
+          <router-link
+            class="nav-link"
+            active-class="active"
+            :to="{
+              name: 'register',
+            }"
+          >
+            Sign up
+          </router-link>
         </li>
       </ul>
     </div>

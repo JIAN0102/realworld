@@ -6,8 +6,33 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'global-feed',
       component: HomeView,
+    },
+    {
+      path: '/my-feeds',
+      name: 'my-feed',
+      component: HomeView,
+    },
+    {
+      path: '/tag/:tag',
+      name: 'tag',
+      component: HomeView,
+    },
+    {
+      path: '/article/:slug',
+      name: 'article',
+      component: () => import('@/views/ArticleView.vue'),
+    },
+    {
+      path: '/editor',
+      name: 'create-article',
+      component: () => import('@/views/ArticleCreateView.vue'),
+    },
+    {
+      path: '/editor/:slug',
+      name: 'edit-article',
+      component: () => import('@/views/ArticleEditView.vue'),
     },
     {
       path: '/register',
@@ -21,27 +46,17 @@ const router = createRouter({
     },
     {
       path: '/settings',
-      name: 'login',
+      name: 'settings',
       component: () => import('@/views/SettingsView.vue'),
     },
     {
-      path: '/article/:slug',
-      name: 'article',
-      component: () => import('@/views/ArticleView.vue'),
+      path: '/profile/:username',
+      name: 'profile',
+      component: () => import('@/views/ProfileView.vue'),
     },
     {
-      path: '/editor',
-      name: 'article-create',
-      component: () => import('@/views/ArticleCreateView.vue'),
-    },
-    {
-      path: '/editor/:slug',
-      name: 'article-edit',
-      component: () => import('@/views/ArticleEditView.vue'),
-    },
-    {
-      path: '/@:username/:tabId',
-      name: 'article-edit',
+      path: '/profile/:username/favorites',
+      name: 'profile-favorites',
       component: () => import('@/views/ProfileView.vue'),
     },
   ],

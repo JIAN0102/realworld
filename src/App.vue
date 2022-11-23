@@ -1,11 +1,9 @@
 <script>
-import { RouterView } from 'vue-router';
 import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
 
 export default {
   components: {
-    RouterView,
     TheHeader,
     TheFooter,
   },
@@ -15,7 +13,7 @@ export default {
 <template>
   <TheHeader />
 
-  <RouterView />
+  <router-view />
 
   <TheFooter />
 </template>
