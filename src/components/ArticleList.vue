@@ -1,6 +1,7 @@
 <script>
+import { mapState, mapActions } from 'pinia';
+import { useArticleStore } from '@/stores/article';
 import { pageToOffset } from '@/services';
-import { fetchArticles, fetchArticlesByFeed } from '@/services/article';
 import ArticlePreview from '@/components/ArticlePreview.vue';
 import BasePagination from '@/components/BasePagination.vue';
 
@@ -13,10 +14,11 @@ export default {
     return {
       isLoading: false,
       options: {},
-      articles: [],
-      articlesCount: 0,
       currentPage: 1,
     };
+  },
+  computed: {
+    ...mapState(useArticleStore, ['articles', 'articlesCount']),
   },
   watch: {
     '$route.name': {
@@ -49,45 +51,15 @@ export default {
     this.getArticles();
   },
   methods: {
+    ...mapActions(useArticleStore, ['fetchArticles']),
     async getArticles() {
       this.isLoading = true;
-
-      let promise = null;
-
-      switch (this.options.name) {
-        case 'global-feed':
-          promise = fetchArticles(pageToOffset(this.currentPage));
-          break;
-        case 'my-feed':
-          promise = fetchArticlesByFeed(pageToOffset(this.currentPage));
-          break;
-        case 'tag':
-          promise = fetchArticles({
-            tag: this.options.tag,
-            ...pageToOffset(this.currentPage),
-          });
-          break;
-        case 'profile':
-          promise = fetchArticles({
-            author: this.options.username,
-            ...pageToOffset(this.currentPage),
-          });
-          break;
-        case 'profile-favorites':
-          promise = fetchArticles({
-            favorited: this.options.username,
-            ...pageToOffset(this.currentPage),
-          });
-          break;
-        default:
-          break;
-      }
-
-      const res = await promise;
-
-      this.articles = res.data.articles;
-      this.articlesCount = res.data.articlesCount;
-
+      await this.fetchArticles(
+        {
+          ...this.options,
+        },
+        pageToOffset(this.currentPage)
+      );
       this.isLoading = false;
     },
     changePage(page) {

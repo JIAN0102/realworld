@@ -1,8 +1,31 @@
+<script>
+import { mapState } from 'pinia';
+import { useArticleStore } from '@/stores/article';
+import ArticleMeta from '@/components/ArticleMeta.vue';
+
+export default {
+  name: 'ArticleView',
+  components: {
+    ArticleMeta,
+  },
+  async beforeRouteEnter(to, from, next) {
+    const { fetchArticle } = useArticleStore();
+    await fetchArticle(to.params.slug);
+    next();
+  },
+  computed: {
+    ...mapState(useArticleStore, ['article']),
+  },
+};
+</script>
+
 <template>
   <div class="article-page">
     <div class="banner">
       <div class="container">
-        <h1>How to build webapps that scale</h1>
+        <h1>{{ article.title }}</h1>
+
+        <ArticleMeta :article="article" />
 
         <div class="article-meta">
           <a href=""><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
