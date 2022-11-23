@@ -1,3 +1,20 @@
+<script>
+import { mapState, mapActions } from 'pinia';
+import { useUserStore } from '@/stores/user';
+
+export default {
+  computed: {
+    ...mapState(useUserStore, ['currentUser', 'isAuthenticated']),
+  },
+  mounted() {
+    this.checkAuth();
+  },
+  methods: {
+    ...mapActions(useUserStore, ['checkAuth']),
+  },
+};
+</script>
+
 <template>
   <nav class="navbar navbar-light">
     <div class="container">
@@ -21,44 +38,68 @@
             Home
           </router-link>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="">
-            <i class="ion-compose"></i>&nbsp;New Article
-          </a>
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            :to="{
-              name: 'settings',
-            }"
-          >
-            <i class="ion-gear-a"></i>&nbsp;Settings
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            :to="{
-              name: 'login',
-            }"
-          >
-            Sign in
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            :to="{
-              name: 'register',
-            }"
-          >
-            Sign up
-          </router-link>
-        </li>
+        <template v-if="isAuthenticated">
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              active-class="active"
+              :to="{
+                name: 'create-article',
+              }"
+            >
+              <i class="ion-compose" />&nbsp;New Article
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              active-class="active"
+              :to="{
+                name: 'settings',
+              }"
+            >
+              <i class="ion-gear-a"></i>&nbsp;Settings
+            </router-link>
+          </li>
+          <li v-if="currentUser" class="nav-item">
+            <router-link
+              class="nav-link"
+              active-class="active"
+              :to="{
+                name: 'profile',
+                params: {
+                  username: currentUser.username,
+                },
+              }"
+            >
+              {{ currentUser.username }}
+            </router-link>
+          </li>
+        </template>
+        <template v-else>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              active-class="active"
+              :to="{
+                name: 'login',
+              }"
+            >
+              Sign in
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              active-class="active"
+              :to="{
+                name: 'register',
+              }"
+            >
+              Sign up
+            </router-link>
+          </li>
+        </template>
       </ul>
     </div>
   </nav>

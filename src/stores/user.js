@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia';
 import storage from '@/utils/storage';
+import { fetchCurrentUser } from '@/services/user';
 
 const userStorage = storage('user');
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     currentUser: null,
-    isAuthorized: !!userStorage.get(),
+    isAuthenticated: !!userStorage.get(),
   }),
   actions: {
     setFromUser(user) {
@@ -18,11 +19,17 @@ export const useUserStore = defineStore('user', {
     },
     setAuthToken(token) {
       if (token) {
-        this.isAuthorized = true;
+        this.isAuthenticated = true;
         userStorage.set(token);
       } else {
-        this.isAuthorized = false;
+        this.isAuthenticated = false;
         userStorage.remove();
+      }
+    },
+    async checkAuth() {
+      if (this.isAuthenticated) {
+        const res = await fetchCurrentUser();
+        this.setFromUser(res.data.user);
       }
     },
   },

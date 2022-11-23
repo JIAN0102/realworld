@@ -18,3 +18,7 @@ export function register({ username, email, password }) {
     },
   });
 }
+
+export function fetchCurrentUser() {
+  return request.get('/user');
+}

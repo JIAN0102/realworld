@@ -1,3 +1,22 @@
+<script>
+import { mapActions } from 'pinia';
+import { useUserStore } from '@/stores/user';
+
+export default {
+  name: 'LoginView',
+  methods: {
+    ...mapActions(useUserStore, ['setCurrentUser', 'setAuthToken']),
+    logout() {
+      this.setCurrentUser(null);
+      this.setAuthToken(null);
+      this.$router.push({
+        name: 'global-feed',
+      });
+    },
+  },
+};
+</script>
+
 <template>
   <div class="settings-page">
     <div class="container page">
@@ -48,7 +67,7 @@
             </fieldset>
           </form>
           <hr />
-          <button class="btn btn-outline-danger">
+          <button class="btn btn-outline-danger" @click.prevent="logout">
             Or click here to logout.
           </button>
         </div>
