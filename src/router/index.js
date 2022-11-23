@@ -11,7 +11,7 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/my-feeds',
+      path: '/my-feed',
       name: 'my-feed',
       component: HomeView,
     },
