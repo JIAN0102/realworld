@@ -96,7 +96,9 @@ router.beforeEach((to) => {
     };
   }
   if (to.meta.anonymousOnly && isAuthenticated) {
-    return;
+    return {
+      name: 'global-feed',
+    };
   }
 });
 

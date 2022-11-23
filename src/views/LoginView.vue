@@ -25,15 +25,9 @@ export default {
       try {
         const res = await login(this.user);
         this.setFromUser(res.data.user);
-        if (this.$route.redirectedFrom) {
-          this.$router.push({
-            name: this.$route.redirectedFrom.name,
-          });
-        } else {
-          this.$router.push({
-            name: 'global-feed',
-          });
-        }
+        this.$router.push({
+          name: this.$route.redirectedFrom?.name || 'global-feed',
+        });
       } catch (error) {
         this.errors = error.response.data.errors;
       }
