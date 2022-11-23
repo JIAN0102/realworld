@@ -1,5 +1,5 @@
 <script>
-import { mapState, mapActions } from 'pinia';
+import { mapActions } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { login } from '@/services/user';
 
@@ -14,9 +14,6 @@ export default {
       },
     };
   },
-  computed: {
-    ...mapState(useUserStore, ['isAuthorized']),
-  },
   methods: {
     ...mapActions(useUserStore, [
       'setFromUser',
@@ -24,9 +21,13 @@ export default {
       'setAuthToken',
     ]),
     async onSubmit() {
+      this.errors = null;
       try {
         const res = await login(this.user);
         this.setFromUser(res.data.user);
+        this.$router.push({
+          name: 'global-feed',
+        });
       } catch (error) {
         this.errors = error.response.data.errors;
       }

@@ -1,3 +1,42 @@
+<script>
+import { mapActions } from 'pinia';
+import { useUserStore } from '@/stores/user';
+import { register } from '@/services/user';
+
+export default {
+  name: 'LoginView',
+  data() {
+    return {
+      errors: null,
+      user: {
+        username: '',
+        email: '',
+        password: '',
+      },
+    };
+  },
+  methods: {
+    ...mapActions(useUserStore, [
+      'setFromUser',
+      'setCurrentUser',
+      'setAuthToken',
+    ]),
+    async onSubmit() {
+      this.errors = null;
+      try {
+        const res = await register(this.user);
+        this.setFromUser(res.data.user);
+        this.$router.push({
+          name: 'global-feed',
+        });
+      } catch (error) {
+        this.errors = error.response.data.errors;
+      }
+    },
+  },
+};
+</script>
+
 <template>
   <div class="auth-page">
     <div class="container page">
@@ -8,9 +47,16 @@
             <a href="">Have an account?</a>
           </p>
 
-          <form>
+          <ul class="error-messages">
+            <li v-for="(error, field) in errors" :key="field">
+              {{ field }} {{ error ? error[0] : '' }}
+            </li>
+          </ul>
+
+          <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
               <input
+                v-model="user.username"
                 class="form-control form-control-lg"
                 type="text"
                 placeholder="Your Name"
@@ -18,6 +64,7 @@
             </fieldset>
             <fieldset class="form-group">
               <input
+                v-model="user.email"
                 class="form-control form-control-lg"
                 type="text"
                 placeholder="Email"
@@ -25,6 +72,7 @@
             </fieldset>
             <fieldset class="form-group">
               <input
+                v-model="user.password"
                 class="form-control form-control-lg"
                 type="password"
                 placeholder="Password"
