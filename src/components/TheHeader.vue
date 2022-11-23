@@ -1,10 +1,25 @@
 <template>
   <nav class="navbar navbar-light">
     <div class="container">
-      <a class="navbar-brand" href="index.html">conduit</a>
+      <router-link
+        class="navbar-brand"
+        :to="{
+          name: 'home',
+        }"
+      >
+        conduit
+      </router-link>
       <ul class="nav navbar-nav pull-xs-right">
         <li class="nav-item">
-          <a class="nav-link active" href="">Home</a>
+          <router-link
+            class="nav-link"
+            active-class="active"
+            :to="{
+              name: 'home',
+            }"
+          >
+            Home
+          </router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="">
