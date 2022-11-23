@@ -1,4 +1,8 @@
 <script>
+import { mapState, mapActions } from 'pinia';
+import { useUserStore } from '@/stores/user';
+import { login } from '@/services/user';
+
 export default {
   name: 'LoginView',
   data() {
@@ -10,9 +14,22 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState(useUserStore, ['isAuthorized']),
+  },
   methods: {
-    onSubmit() {
-      console.log(this.user.email, this.user.password);
+    ...mapActions(useUserStore, [
+      'setFromUser',
+      'setCurrentUser',
+      'setAuthToken',
+    ]),
+    async onSubmit() {
+      try {
+        const res = await login(this.user);
+        this.setFromUser(res.data.user);
+      } catch (error) {
+        this.errors = error.response.data.errors;
+      }
     },
   },
 };
@@ -27,6 +44,12 @@ export default {
           <p class="text-xs-center">
             <a href="">Need an account?</a>
           </p>
+
+          <ul class="error-messages">
+            <li v-for="(error, field) in errors" :key="field">
+              {{ field }} {{ error ? error[0] : '' }}
+            </li>
+          </ul>
 
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
