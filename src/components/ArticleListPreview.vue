@@ -3,6 +3,7 @@ import {
   createArticleFavorite,
   deleteArticleFavorite,
 } from '@/services/article';
+import { formatDate } from '@/helper/format-date';
 
 export default {
   props: {
@@ -12,6 +13,11 @@ export default {
     },
   },
   emits: ['update'],
+  computed: {
+    formatCreatedAt() {
+      return formatDate(this.article.createdAt);
+    },
+  },
   methods: {
     async toggleFavorite() {
       if (!this.isAuthenticated) {
@@ -54,7 +60,7 @@ export default {
         >
           {{ article.author.username }}
         </router-link>
-        <span class="date">{{ article.createdAt }}</span>
+        <span class="date">{{ formatCreatedAt }}</span>
       </div>
       <button
         class="btn btn-sm pull-xs-right"

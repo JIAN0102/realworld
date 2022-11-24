@@ -2,6 +2,7 @@
 import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { deleteComment } from '@/services/comment';
+import { formatDate } from '@/helper/format-date';
 
 export default {
   props: {
@@ -18,6 +19,9 @@ export default {
         this.isAuthenticated &&
         this.currentUser.username === this.comment.author.username
       );
+    },
+    formatCreatedAt() {
+      return formatDate(this.comment.createdAt);
     },
   },
   methods: {
@@ -60,7 +64,7 @@ export default {
       >
         {{ comment.author.username }}
       </router-link>
-      <span class="date-posted">{{ comment.createdAt }}</span>
+      <span class="date-posted">{{ formatCreatedAt }}</span>
       <span v-if="isCurrentUser" class="mod-options" @click="handleClick">
         <i class="ion-trash-a"></i>
       </span>

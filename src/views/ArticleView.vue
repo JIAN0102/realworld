@@ -14,6 +14,16 @@ export default {
     CommentForm,
     CommentPreview,
   },
+  async beforeRouteEnter(to, from, next) {
+    const res = await Promise.all([
+      getArticle(to.params.slug),
+      getComments(to.params.slug),
+    ]);
+    next((vm) => {
+      vm.article = res[0].data.article;
+      vm.comments = res[1].data.comments;
+    });
+  },
   data() {
     return {
       article: {},
@@ -27,14 +37,6 @@ export default {
         .slice()
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     },
-  },
-  async created() {
-    const res = await Promise.all([
-      getArticle(this.$route.params.slug),
-      getComments(this.$route.params.slug),
-    ]);
-    this.article = res[0].data.article;
-    this.comments = res[1].data.comments;
   },
   methods: {
     updateArticleFollowing() {

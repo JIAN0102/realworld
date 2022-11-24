@@ -4,8 +4,10 @@ import { useUserStore } from '@/stores/user';
 import {
   createArticleFavorite,
   deleteArticleFavorite,
+  deleteArticle,
 } from '@/services/article';
 import { followProfile, unfollowProfile } from '@/services/profile';
+import { formatDate } from '@/helper/format-date';
 
 export default {
   props: {
@@ -45,6 +47,9 @@ export default {
         'btn-outline-primary': !this.article.favorited,
       };
     },
+    formatCreatedAt() {
+      return formatDate(this.article.createdAt);
+    },
   },
   methods: {
     async toggleFollow() {
@@ -70,6 +75,12 @@ export default {
         : createArticleFavorite(this.article.slug);
       const res = await request;
       this.$emit('update-favorite', res.data.article);
+    },
+    async handleClick() {
+      await deleteArticle(this.article.slug);
+      this.$router.push({
+        name: 'global-feed',
+      });
     },
   },
 };
@@ -100,7 +111,7 @@ export default {
       >
         {{ article.author.username }}
       </router-link>
-      <span class="date">{{ article.createdAt }}</span>
+      <span class="date">{{ formatCreatedAt }}</span>
     </div>
 
     <template v-if="isCurrentUser">
@@ -110,14 +121,18 @@ export default {
         :to="{
           name: 'edit-article',
           params: {
-            slug: $route.params.slug,
+            slug: article.slug,
           },
         }"
       >
-        <i class="ion-edit space" /> Edit Article
+        <i class="ion-edit space"></i> Edit Article
       </router-link>
       &nbsp;&nbsp;
-      <button aria-label="Delete article" class="btn btn-outline-danger btn-sm">
+      <button
+        aria-label="Delete article"
+        class="btn btn-outline-danger btn-sm"
+        @click="handleClick"
+      >
         <i class="ion-trash-a" /> Delete Article
       </button>
     </template>
