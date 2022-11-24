@@ -1,20 +1,40 @@
 <script>
+import { mapState } from 'pinia';
+import { useUserStore } from '@/stores/user';
 import { getArticle } from '@/services/article';
+import { getComments } from '@/services/comment';
 import ArticleDetailMeta from '@/components/ArticleDetailMeta.vue';
+import CommentForm from '@/components/CommentForm.vue';
+import CommentPreview from '@/components/CommentPreview.vue';
 
 export default {
   name: 'ArticleView',
   components: {
     ArticleDetailMeta,
+    CommentForm,
+    CommentPreview,
   },
   data() {
     return {
       article: {},
+      comments: [],
     };
   },
+  computed: {
+    ...mapState(useUserStore, ['isAuthenticated']),
+    sortedComments() {
+      return this.comments
+        .slice()
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    },
+  },
   async created() {
-    const res = await getArticle(this.$route.params.slug);
-    this.article = res.data.article;
+    const res = await Promise.all([
+      getArticle(this.$route.params.slug),
+      getComments(this.$route.params.slug),
+    ]);
+    this.article = res[0].data.article;
+    this.comments = res[1].data.comments;
   },
   methods: {
     updateArticleFollowing() {
@@ -23,6 +43,13 @@ export default {
     updateArticleFavorite(newArticle) {
       this.article.favorited = newArticle.favorited;
       this.article.favoritesCount = newArticle.favoritesCount;
+    },
+    createComment(newComment) {
+      this.comments.push(newComment);
+    },
+    deleteComment(id) {
+      const index = this.comments.findIndex((comment) => comment.id === id);
+      this.comments.splice(index, 1);
     },
   },
 };
@@ -80,66 +107,20 @@ export default {
 
       <div class="row">
         <div class="col-xs-12 col-md-8 offset-md-2">
-          <form class="card comment-form">
-            <div class="card-block">
-              <textarea
-                class="form-control"
-                placeholder="Write a comment..."
-                rows="3"
-              ></textarea>
-            </div>
-            <div class="card-footer">
-              <img
-                src="http://i.imgur.com/Qr71crq.jpg"
-                class="comment-author-img"
-              />
-              <button class="btn btn-sm btn-primary">Post Comment</button>
-            </div>
-          </form>
+          <CommentForm v-if="isAuthenticated" @create-comment="createComment" />
+          <p v-else>
+            <router-link :to="{ name: 'login' }"> Sign in </router-link>
+            or
+            <router-link :to="{ name: 'register' }"> sign up </router-link>
+            to add comments on this article.
+          </p>
 
-          <div class="card">
-            <div class="card-block">
-              <p class="card-text">
-                With supporting text below as a natural lead-in to additional
-                content.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="" class="comment-author">
-                <img
-                  src="http://i.imgur.com/Qr71crq.jpg"
-                  class="comment-author-img"
-                />
-              </a>
-              &nbsp;
-              <a href="" class="comment-author">Jacob Schmidt</a>
-              <span class="date-posted">Dec 29th</span>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-block">
-              <p class="card-text">
-                With supporting text below as a natural lead-in to additional
-                content.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="" class="comment-author">
-                <img
-                  src="http://i.imgur.com/Qr71crq.jpg"
-                  class="comment-author-img"
-                />
-              </a>
-              &nbsp;
-              <a href="" class="comment-author">Jacob Schmidt</a>
-              <span class="date-posted">Dec 29th</span>
-              <span class="mod-options">
-                <i class="ion-edit"></i>
-                <i class="ion-trash-a"></i>
-              </span>
-            </div>
-          </div>
+          <CommentPreview
+            v-for="comment in sortedComments"
+            :key="comment.id"
+            :comment="comment"
+            @delete-comment="deleteComment"
+          />
         </div>
       </div>
     </div>
