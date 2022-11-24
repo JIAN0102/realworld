@@ -1,70 +1,112 @@
 <script>
-import { mapState, mapActions } from 'pinia';
-import { useArticleStore } from '@/stores/article';
 import { pageToOffset } from '@/services';
-import ArticlePreview from '@/components/ArticlePreview.vue';
+import { getArticles, getArticlesByFeed } from '@/services/article';
+import ArticleListPreview from '@/components/ArticleListPreview.vue';
 import BasePagination from '@/components/BasePagination.vue';
 
 export default {
   components: {
-    ArticlePreview,
+    ArticleListPreview,
     BasePagination,
   },
   data() {
     return {
       isLoading: false,
-      options: {},
+      articles: [],
+      articlesCount: 0,
       currentPage: 1,
+      type: 'global-feed',
+      author: '',
+      tag: '',
     };
   },
   computed: {
-    ...mapState(useArticleStore, ['articles', 'articlesCount']),
+    metaChanged() {
+      return [this.type, this.author, this.tag];
+    },
   },
   watch: {
     '$route.name': {
       handler(newVal) {
-        if (newVal) this.options.name = newVal;
-      },
-      immediate: true,
-    },
-    '$route.params.tag': {
-      handler(newVal) {
-        if (newVal) this.options.tag = newVal;
+        if (newVal) this.type = newVal;
       },
       immediate: true,
     },
     '$route.params.username': {
       handler(newVal) {
-        if (newVal) this.options.username = newVal;
+        if (newVal) this.author = newVal;
       },
       immediate: true,
     },
-    options: {
+    '$route.params.tag': {
+      handler(newVal) {
+        if (newVal) this.tag = newVal;
+      },
+      immediate: true,
+    },
+    metaChanged: {
       handler() {
         if (this.currentPage !== 1) this.currentPage = 1;
-        this.getArticles();
+        this.fetchArticles();
       },
-      deep: true,
     },
   },
-  mounted() {
-    this.getArticles();
+  created() {
+    this.fetchArticles();
   },
   methods: {
-    ...mapActions(useArticleStore, ['fetchArticles']),
-    async getArticles() {
+    async fetchArticles() {
       this.isLoading = true;
-      await this.fetchArticles(
-        {
-          ...this.options,
-        },
-        pageToOffset(this.currentPage)
-      );
+
+      let request = null;
+
+      switch (this.type) {
+        case 'global-feed':
+          request = getArticles(pageToOffset(this.currentPage));
+          break;
+        case 'my-feed':
+          request = getArticlesByFeed(pageToOffset(this.currentPage));
+          break;
+        case 'tag':
+          request = getArticles({
+            ...pageToOffset(this.currentPage),
+            tag: this.tag,
+          });
+          break;
+        case 'profile':
+          request = getArticles({
+            ...pageToOffset(this.currentPage),
+            author: this.author,
+          });
+          break;
+        case 'profile-favorites':
+          request = getArticles({
+            ...pageToOffset(this.currentPage),
+            favorited: this.author,
+          });
+          break;
+        default:
+          break;
+      }
+
+      if (request !== null) {
+        const res = await request;
+        this.articles = res.data.articles;
+        this.articlesCount = res.data.articlesCount;
+      }
+
       this.isLoading = false;
     },
     changePage(page) {
       this.currentPage = page;
-      this.getArticles();
+      this.fetchArticles();
+    },
+    updateArticleFavorite(newArticle) {
+      const index = this.articles.findIndex(
+        (article) => article.slug === newArticle.slug
+      );
+      this.articles[index].favorited = newArticle.favorited;
+      this.articles[index].favoritesCount = newArticle.favoritesCount;
     },
   },
 };
@@ -77,10 +119,11 @@ export default {
       No articles are here... yet.
     </div>
     <template v-else>
-      <ArticlePreview
+      <ArticleListPreview
         v-for="article in articles"
         :key="article.slug"
         :article="article"
+        @update="updateArticleFavorite"
       />
     </template>
 

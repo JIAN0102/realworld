@@ -1,20 +1,29 @@
 <script>
-import { mapState } from 'pinia';
-import { useArticleStore } from '@/stores/article';
-import ArticleMeta from '@/components/ArticleMeta.vue';
+import { getArticle } from '@/services/article';
+import ArticleDetailMeta from '@/components/ArticleDetailMeta.vue';
 
 export default {
   name: 'ArticleView',
   components: {
-    ArticleMeta,
+    ArticleDetailMeta,
   },
-  async beforeRouteEnter(to, from, next) {
-    const { fetchArticle } = useArticleStore();
-    await fetchArticle(to.params.slug);
-    next();
+  data() {
+    return {
+      article: {},
+    };
   },
-  computed: {
-    ...mapState(useArticleStore, ['article']),
+  async created() {
+    const res = await getArticle(this.$route.params.slug);
+    this.article = res.data.article;
+  },
+  methods: {
+    updateArticleFollowing() {
+      this.article.author.following = !this.article.author.following;
+    },
+    updateArticleFavorite(newArticle) {
+      this.article.favorited = newArticle.favorited;
+      this.article.favoritesCount = newArticle.favoritesCount;
+    },
   },
 };
 </script>
@@ -25,24 +34,12 @@ export default {
       <div class="container">
         <h1>{{ article.title }}</h1>
 
-        <ArticleMeta :article="article" />
-
-        <div class="article-meta">
-          <a href=""><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
-          <div class="info">
-            <a href="" class="author">Eric Simons</a>
-            <span class="date">January 20th</span>
-          </div>
-          <button class="btn btn-sm btn-outline-secondary">
-            <i class="ion-plus-round"></i>
-            &nbsp; Follow Eric Simons <span class="counter">(10)</span>
-          </button>
-          &nbsp;&nbsp;
-          <button class="btn btn-sm btn-outline-primary">
-            <i class="ion-heart"></i>
-            &nbsp; Favorite Post <span class="counter">(29)</span>
-          </button>
-        </div>
+        <ArticleDetailMeta
+          v-if="Object.keys(article).length"
+          :article="article"
+          @update-follow="updateArticleFollowing"
+          @update-favorite="updateArticleFavorite"
+        />
       </div>
     </div>
 
@@ -50,36 +47,35 @@ export default {
       <div class="row article-content">
         <div class="col-md-12">
           <p>
-            Web development technologies have evolved at an incredible clip over
-            the past few years.
+            {{ article.body }}
           </p>
-          <h2 id="introducing-ionic">Introducing RealWorld.</h2>
-          <p>It's a great solution for learning how other frameworks work.</p>
+          <ul class="tag-list">
+            <li v-for="(tag, index) of article.tagList" :key="tag + index">
+              <router-link
+                class="tag-default tag-pill tag-outline"
+                :to="{
+                  name: 'tag',
+                  params: {
+                    tag: tag,
+                  },
+                }"
+              >
+                {{ tag }}
+              </router-link>
+            </li>
+          </ul>
         </div>
       </div>
 
       <hr />
 
       <div class="article-actions">
-        <div class="article-meta">
-          <a href="profile.html"
-            ><img src="http://i.imgur.com/Qr71crq.jpg"
-          /></a>
-          <div class="info">
-            <a href="" class="author">Eric Simons</a>
-            <span class="date">January 20th</span>
-          </div>
-
-          <button class="btn btn-sm btn-outline-secondary">
-            <i class="ion-plus-round"></i>
-            &nbsp; Follow Eric Simons
-          </button>
-          &nbsp;
-          <button class="btn btn-sm btn-outline-primary">
-            <i class="ion-heart"></i>
-            &nbsp; Favorite Post <span class="counter">(29)</span>
-          </button>
-        </div>
+        <ArticleDetailMeta
+          v-if="Object.keys(article).length"
+          :article="article"
+          @update-follow="updateArticleFollowing"
+          @update-favorite="updateArticleFavorite"
+        />
       </div>
 
       <div class="row">

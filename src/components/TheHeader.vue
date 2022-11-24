@@ -1,16 +1,10 @@
 <script>
-import { mapState, mapActions } from 'pinia';
+import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
 
 export default {
   computed: {
     ...mapState(useUserStore, ['currentUser', 'isAuthenticated']),
-  },
-  mounted() {
-    this.checkAuth();
-  },
-  methods: {
-    ...mapActions(useUserStore, ['checkAuth']),
   },
 };
 </script>

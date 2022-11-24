@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import storage from '@/utils/storage';
-import { fetchCurrentUser } from '@/services/user';
+import { getCurrentUser } from '@/services/user';
 
 const userStorage = storage('user');
 
@@ -27,8 +27,8 @@ export const useUserStore = defineStore('user', {
       }
     },
     async checkAuth() {
-      if (this.isAuthenticated) {
-        const res = await fetchCurrentUser();
+      if (!this.currentUser && this.isAuthenticated) {
+        const res = await getCurrentUser();
         this.setFromUser(res.data.user);
       }
     },
