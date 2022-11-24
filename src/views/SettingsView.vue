@@ -1,11 +1,42 @@
 <script>
-import { mapActions } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 import { useUserStore } from '@/stores/user';
+import { updateUser } from '@/services/user';
 
 export default {
-  name: 'LoginView',
+  name: 'SettingsView',
+  data() {
+    return {
+      cacheUser: {},
+    };
+  },
+  computed: {
+    ...mapState(useUserStore, ['currentUser']),
+  },
+  created() {
+    this.cacheUser = {
+      email: this.currentUser.email,
+      username: this.currentUser.username,
+      bio: this.currentUser.bio,
+      image: this.currentUser.image,
+    };
+  },
   methods: {
     ...mapActions(useUserStore, ['setCurrentUser', 'setAuthToken']),
+    async onSubmit() {
+      Object.keys(this.cacheUser).forEach((key) => {
+        if (!this.cacheUser[key]) delete this.cacheUser[key];
+      });
+      const res = await updateUser(this.cacheUser);
+      this.setCurrentUser(res.data.user);
+      this.setAuthToken(res.data.user.token);
+      this.$router.push({
+        name: 'profile',
+        params: {
+          username: res.data.user.username,
+        },
+      });
+    },
     logout() {
       this.setCurrentUser(null);
       this.setAuthToken(null);
@@ -24,10 +55,11 @@ export default {
         <div class="col-md-6 offset-md-3 col-xs-12">
           <h1 class="text-xs-center">Your Settings</h1>
 
-          <form>
+          <form @submit.prevent="onSubmit">
             <fieldset>
               <fieldset class="form-group">
                 <input
+                  v-model="cacheUser.image"
                   class="form-control"
                   type="text"
                   placeholder="URL of profile picture"
@@ -35,6 +67,7 @@ export default {
               </fieldset>
               <fieldset class="form-group">
                 <input
+                  v-model="cacheUser.username"
                   class="form-control form-control-lg"
                   type="text"
                   placeholder="Your Name"
@@ -42,6 +75,7 @@ export default {
               </fieldset>
               <fieldset class="form-group">
                 <textarea
+                  v-model="cacheUser.bio"
                   class="form-control form-control-lg"
                   rows="8"
                   placeholder="Short bio about you"
@@ -49,6 +83,7 @@ export default {
               </fieldset>
               <fieldset class="form-group">
                 <input
+                  v-model="cacheUser.email"
                   class="form-control form-control-lg"
                   type="text"
                   placeholder="Email"
@@ -56,6 +91,7 @@ export default {
               </fieldset>
               <fieldset class="form-group">
                 <input
+                  v-model="cacheUser.password"
                   class="form-control form-control-lg"
                   type="password"
                   placeholder="Password"

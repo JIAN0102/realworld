@@ -1,24 +1,23 @@
 import { request } from './index';
 
-export function login({ email, password }) {
+export function login(user) {
   return request.post('/users/login', {
-    user: {
-      email,
-      password,
-    },
+    user,
   });
 }
 
-export function register({ username, email, password }) {
+export function register(user) {
   return request.post('/users', {
-    user: {
-      username,
-      email,
-      password,
-    },
+    user,
   });
 }
 
-export function getCurrentUser() {
+export function getUser() {
   return request.get('/user');
+}
+
+export function updateUser(user) {
+  return request.put('/user', {
+    user,
+  });
 }
