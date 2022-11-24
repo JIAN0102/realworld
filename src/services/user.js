@@ -1,23 +1,38 @@
 import { request } from './index';
 
 export function login(user) {
-  return request.post('/users/login', {
-    user,
+  return request({
+    method: 'POST',
+    url: '/users/login',
+    data: {
+      user,
+    },
   });
 }
 
 export function register(user) {
-  return request.post('/users', {
-    user,
+  return request({
+    method: 'POST',
+    url: '/users',
+    data: {
+      user,
+    },
   });
 }
 
 export function getUser() {
-  return request.get('/user');
+  return request({
+    method: 'GET',
+    url: '/user',
+  });
 }
 
 export function updateUser(user) {
-  return request.put('/user', {
-    user,
+  return request({
+    method: 'PUT',
+    url: '/user',
+    data: {
+      user,
+    },
   });
 }

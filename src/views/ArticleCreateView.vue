@@ -25,6 +25,7 @@ export default {
       });
     },
     createArticleTag(tag) {
+      if (this.tagInput === '') return;
       this.article.tagList.push(tag);
       this.tagInput = '';
     },

@@ -1,17 +1,27 @@
 import { request } from './index';
 
 export function getComments(slug) {
-  return request.get(`/articles/${slug}/comments`);
+  return request({
+    method: 'GET',
+    url: `/articles/${slug}/comments`,
+  });
 }
 
 export function createComment(slug, content) {
-  return request.post(`/articles/${slug}/comments`, {
-    comment: {
-      body: content,
+  return request({
+    method: 'POST',
+    url: `/articles/${slug}/comments`,
+    data: {
+      comment: {
+        body: content,
+      },
     },
   });
 }
 
 export function deleteComment(slug, id) {
-  return request.delete(`/articles/${slug}/comments/${id}`);
+  return request({
+    method: 'DELETE',
+    url: `/articles/${slug}/comments/${id}`,
+  });
 }
