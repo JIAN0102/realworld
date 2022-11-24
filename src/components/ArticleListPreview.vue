@@ -1,4 +1,6 @@
 <script>
+import { mapState } from 'pinia';
+import { useUserStore } from '@/stores/user';
 import {
   createArticleFavorite,
   deleteArticleFavorite,
@@ -14,6 +16,7 @@ export default {
   },
   emits: ['update'],
   computed: {
+    ...mapState(useUserStore, ['isAuthenticated']),
     formatCreatedAt() {
       return formatDate(this.article.createdAt);
     },

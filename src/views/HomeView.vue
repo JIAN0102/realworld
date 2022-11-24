@@ -2,11 +2,13 @@
 import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import ArticleList from '@/components/ArticleList.vue';
+import BaseTag from '@/components/BaseTag.vue';
 
 export default {
   name: 'HomeView',
   components: {
     ArticleList,
+    BaseTag,
   },
   data() {
     return {
@@ -15,7 +17,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(useUserStore, ['currentUser']),
+    ...mapState(useUserStore, ['isAuthenticated']),
   },
 };
 </script>
@@ -34,7 +36,7 @@ export default {
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <li class="nav-item">
+              <li v-if="isAuthenticated" class="nav-item">
                 <router-link
                   class="nav-link"
                   active-class="active"
@@ -58,6 +60,18 @@ export default {
                   Global Feed
                 </router-link>
               </li>
+              <li v-if="$route.params.tag" class="nav-item">
+                <router-link
+                  class="nav-link"
+                  exact-active-class="active"
+                  :to="{
+                    name: 'tag',
+                    tag: $route.params.tag,
+                  }"
+                >
+                  <i class="ion-pound"></i> {{ $route.params.tag }}
+                </router-link>
+              </li>
             </ul>
           </div>
 
@@ -68,16 +82,7 @@ export default {
           <div class="sidebar">
             <p>Popular Tags</p>
 
-            <div class="tag-list">
-              <a href="" class="tag-pill tag-default">programming</a>
-              <a href="" class="tag-pill tag-default">javascript</a>
-              <a href="" class="tag-pill tag-default">emberjs</a>
-              <a href="" class="tag-pill tag-default">angularjs</a>
-              <a href="" class="tag-pill tag-default">react</a>
-              <a href="" class="tag-pill tag-default">mean</a>
-              <a href="" class="tag-pill tag-default">node</a>
-              <a href="" class="tag-pill tag-default">rails</a>
-            </div>
+            <BaseTag />
           </div>
         </div>
       </div>

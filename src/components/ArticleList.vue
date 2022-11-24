@@ -20,39 +20,20 @@ export default {
       tag: '',
     };
   },
-  computed: {
-    metaChanged() {
-      return [this.type, this.author, this.tag];
-    },
-  },
   watch: {
-    '$route.name': {
+    $route: {
       handler(newVal) {
-        if (newVal) this.type = newVal;
-      },
-      immediate: true,
-    },
-    '$route.params.username': {
-      handler(newVal) {
-        if (newVal) this.author = newVal;
-      },
-      immediate: true,
-    },
-    '$route.params.tag': {
-      handler(newVal) {
-        if (newVal) this.tag = newVal;
-      },
-      immediate: true,
-    },
-    metaChanged: {
-      handler() {
-        if (this.currentPage !== 1) this.currentPage = 1;
+        this.type = newVal.name;
+        if (newVal.params.username) {
+          this.author = newVal.params.username;
+        }
+        if (newVal.params.tag) {
+          this.tag = newVal.params.tag;
+        }
         this.fetchArticles();
       },
+      immediate: true,
     },
-  },
-  created() {
-    this.fetchArticles();
   },
   methods: {
     async fetchArticles() {
