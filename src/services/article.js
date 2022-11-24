@@ -30,7 +30,7 @@ export function createArticle(article) {
   });
 }
 
-export function editArticle(slug, article) {
+export function updateArticle(slug, article) {
   return request.put(`/articles/${slug}`, {
     article,
   });

@@ -7,7 +7,7 @@ import {
   deleteArticle,
 } from '@/services/article';
 import { followProfile, unfollowProfile } from '@/services/profile';
-import { formatDate } from '@/helper/format-date';
+import { formatDate } from '@/helper';
 
 export default {
   props: {

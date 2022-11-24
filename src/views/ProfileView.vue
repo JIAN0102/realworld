@@ -34,9 +34,15 @@ export default {
       };
     },
   },
-  async created() {
-    const res = await getProfile(this.$route.params.username);
-    this.profile = res.data.profile;
+  watch: {
+    '$route.params.username': {
+      async handler() {
+        this.profile = {};
+        const res = await getProfile(this.$route.params.username);
+        this.profile = res.data.profile;
+      },
+      immediate: true,
+    },
   },
   methods: {
     async toggleFollow() {

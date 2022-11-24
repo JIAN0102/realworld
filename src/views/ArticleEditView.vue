@@ -1,5 +1,5 @@
 <script>
-import { getArticle, editArticle } from '@/services/article';
+import { getArticle, updateArticle } from '@/services/article';
 
 export default {
   name: 'ArticleEditView',
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const res = await editArticle(this.$route.params.slug, this.article);
+      const res = await updateArticle(this.$route.params.slug, this.article);
       this.$router.push({
         name: 'article',
         params: {

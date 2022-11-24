@@ -1,5 +1,5 @@
 <script>
-import { pageToOffset } from '@/services';
+import { pageToOffset } from '@/helper';
 import { getArticles, getArticlesByFeed } from '@/services/article';
 import ArticleListPreview from '@/components/ArticleListPreview.vue';
 import BasePagination from '@/components/BasePagination.vue';
@@ -107,11 +107,10 @@ export default {
         @update="updateArticleFavorite"
       />
     </template>
-
-    <BasePagination
-      :articles-count="articlesCount"
-      :current-page="currentPage"
-      @change-page="changePage"
-    />
   </template>
+  <BasePagination
+    :count="articlesCount"
+    :current-page="currentPage"
+    @change-page="changePage"
+  />
 </template>

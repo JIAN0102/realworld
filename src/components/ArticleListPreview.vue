@@ -5,7 +5,7 @@ import {
   createArticleFavorite,
   deleteArticleFavorite,
 } from '@/services/article';
-import { formatDate } from '@/helper/format-date';
+import { formatDate } from '@/helper';
 
 export default {
   props: {

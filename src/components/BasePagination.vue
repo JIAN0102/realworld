@@ -1,7 +1,7 @@
 <script>
 export default {
   props: {
-    articlesCount: {
+    count: {
       type: Number,
       required: true,
     },
@@ -13,7 +13,7 @@ export default {
   emits: ['change-page'],
   computed: {
     totalPage() {
-      return Math.ceil(this.articlesCount / 10);
+      return Math.ceil(this.count / 10);
     },
   },
   methods: {

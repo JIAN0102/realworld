@@ -2,7 +2,7 @@
 import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { deleteComment } from '@/services/comment';
-import { formatDate } from '@/helper/format-date';
+import { formatDate } from '@/helper';
 
 export default {
   props: {

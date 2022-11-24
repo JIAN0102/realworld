@@ -40,7 +40,6 @@ export default {
                 <router-link
                   class="nav-link"
                   active-class="active"
-                  :name="'my-feed'"
                   :to="{
                     name: 'my-feed',
                   }"
@@ -52,7 +51,6 @@ export default {
                 <router-link
                   class="nav-link"
                   active-class="active"
-                  :name="'global-feed'"
                   :to="{
                     name: 'global-feed',
                   }"
@@ -63,7 +61,7 @@ export default {
               <li v-if="$route.params.tag" class="nav-item">
                 <router-link
                   class="nav-link"
-                  exact-active-class="active"
+                  active-class="active"
                   :to="{
                     name: 'tag',
                     tag: $route.params.tag,
