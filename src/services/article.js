@@ -37,23 +37,19 @@ export function getArticle(slug) {
   });
 }
 
-export function createArticle(article) {
+export function createArticle(data) {
   return request({
     method: 'POST',
     url: '/articles',
-    data: {
-      article,
-    },
+    data,
   });
 }
 
-export function updateArticle(slug, article) {
+export function updateArticle(slug, data) {
   return request({
     method: 'PUT',
     url: `/articles/${slug}`,
-    data: {
-      article,
-    },
+    data,
   });
 }
 

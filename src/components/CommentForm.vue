@@ -19,7 +19,11 @@ export default {
       if (this.content === '') return;
       this.isLoading = true;
       try {
-        const res = await createComment(this.$route.params.slug, this.content);
+        const res = await createComment(this.$route.params.slug, {
+          comment: {
+            body: this.content,
+          },
+        });
         this.$emit('create-comment', res.data.comment);
         this.content = '';
       } catch (error) {

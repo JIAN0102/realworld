@@ -47,11 +47,13 @@ export default {
           <p class="text-xs-center">
             <a href="">Need an account?</a>
           </p>
+
           <ul v-if="errors" class="error-messages">
             <li v-for="(error, field) in errors" :key="field">
               {{ field }} {{ error ? error[0] : '' }}
             </li>
           </ul>
+
           <form>
             <fieldset class="form-group">
               <input

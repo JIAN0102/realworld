@@ -7,15 +7,11 @@ export function getComments(slug) {
   });
 }
 
-export function createComment(slug, content) {
+export function createComment(slug, data) {
   return request({
     method: 'POST',
     url: `/articles/${slug}/comments`,
-    data: {
-      comment: {
-        body: content,
-      },
-    },
+    data,
   });
 }
 

@@ -20,7 +20,9 @@ export default {
     async onSubmit() {
       this.isLoading = true;
       try {
-        const res = await createArticle(this.article);
+        const res = await createArticle({
+          article: this.article,
+        });
         this.$router.push({
           name: 'article',
           params: {
@@ -54,6 +56,7 @@ export default {
               {{ field }} {{ error ? error[0] : '' }}
             </li>
           </ul>
+
           <form>
             <fieldset :disabled="isLoading">
               <fieldset class="form-group">

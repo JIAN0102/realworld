@@ -26,7 +26,9 @@ export default {
     async onSubmit() {
       this.isLoading = true;
       try {
-        const res = await updateArticle(this.$route.params.slug, this.article);
+        const res = await updateArticle(this.$route.params.slug, {
+          article: this.article,
+        });
         this.$router.push({
           name: 'article',
           params: {
@@ -54,6 +56,12 @@ export default {
     <div class="container page">
       <div class="row">
         <div class="col-md-10 offset-md-1 col-xs-12">
+          <ul class="error-messages">
+            <li v-for="(error, field) in errors" :key="field">
+              {{ field }} {{ error ? error[0] : '' }}
+            </li>
+          </ul>
+
           <form>
             <fieldset :disabled="isLoading">
               <fieldset class="form-group">

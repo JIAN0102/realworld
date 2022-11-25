@@ -63,11 +63,13 @@ export default {
       <div class="row">
         <div class="col-md-6 offset-md-3 col-xs-12">
           <h1 class="text-xs-center">Your Settings</h1>
+
           <ul v-if="errors" class="error-messages">
             <li v-for="(error, field) in errors" :key="field">
               {{ field }} {{ error ? error[0] : '' }}
             </li>
           </ul>
+
           <form>
             <fieldset :disabled="isLoading">
               <fieldset class="form-group">
