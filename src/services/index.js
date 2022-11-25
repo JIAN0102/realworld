@@ -12,9 +12,7 @@ request.interceptors.request.use(
     const token = userStorage.get();
     if (token) {
       config.headers.Authorization = `Token ${token}`;
-      return config;
     }
-    delete config.headers.Authorization;
     return config;
   },
   (error) => Promise.reject(error)

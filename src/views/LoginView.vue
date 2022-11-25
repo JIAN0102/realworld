@@ -23,7 +23,9 @@ export default {
     async onSubmit() {
       this.errors = null;
       try {
-        const res = await login(this.user);
+        const res = await login({
+          user: this.user,
+        });
         this.setFromUser(res.data.user);
         this.$router.push({
           name: this.$route.redirectedFrom?.name || 'global-feed',
@@ -45,14 +47,12 @@ export default {
           <p class="text-xs-center">
             <a href="">Need an account?</a>
           </p>
-
-          <ul class="error-messages">
+          <ul v-if="errors" class="error-messages">
             <li v-for="(error, field) in errors" :key="field">
               {{ field }} {{ error ? error[0] : '' }}
             </li>
           </ul>
-
-          <form @submit.prevent="onSubmit">
+          <form>
             <fieldset class="form-group">
               <input
                 v-model="user.email"
@@ -69,7 +69,11 @@ export default {
                 placeholder="Password"
               />
             </fieldset>
-            <button class="btn btn-lg btn-primary pull-xs-right">
+            <button
+              class="btn btn-lg btn-primary pull-xs-right"
+              type="button"
+              @click="onSubmit"
+            >
               Sign in
             </button>
           </form>

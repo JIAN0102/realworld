@@ -14,7 +14,12 @@ export default {
       required: true,
     },
   },
-  emits: ['update'],
+  emits: ['update-article-favorite'],
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   computed: {
     ...mapState(useUserStore, ['isAuthenticated']),
     formatCreatedAt() {
@@ -28,11 +33,17 @@ export default {
           name: 'login',
         });
       }
+      this.isLoading = true;
       const request = this.article.favorited
         ? deleteArticleFavorite(this.article.slug)
         : createArticleFavorite(this.article.slug);
-      const res = await request;
-      this.$emit('update', res.data.article);
+      try {
+        const res = await request;
+        this.$emit('update-article-favorite', res.data.article);
+      } catch (error) {
+        console.log(error);
+      }
+      this.isLoading = false;
     },
   },
 };
@@ -71,6 +82,7 @@ export default {
           'btn-primary': article.favorited,
           'btn-outline-primary': !article.favorited,
         }"
+        :disabled="isLoading"
         @click="toggleFavorite"
       >
         <i class="ion-heart"></i> {{ article.favoritesCount }}

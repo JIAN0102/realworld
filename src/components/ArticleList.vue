@@ -1,12 +1,12 @@
 <script>
 import { pageToOffset } from '@/helper';
 import { getArticles, getArticlesByFeed } from '@/services/article';
-import ArticleListPreview from '@/components/ArticleListPreview.vue';
+import ArticlePreview from '@/components/ArticlePreview.vue';
 import BasePagination from '@/components/BasePagination.vue';
 
 export default {
   components: {
-    ArticleListPreview,
+    ArticlePreview,
     BasePagination,
   },
   data() {
@@ -71,9 +71,13 @@ export default {
       }
 
       if (request !== null) {
-        const res = await request;
-        this.articles = res.data.articles;
-        this.articlesCount = res.data.articlesCount;
+        try {
+          const res = await request;
+          this.articles = res.data.articles;
+          this.articlesCount = res.data.articlesCount;
+        } catch (error) {
+          console.log(error);
+        }
       }
 
       this.isLoading = false;
@@ -100,17 +104,17 @@ export default {
       No articles are here... yet.
     </div>
     <template v-else>
-      <ArticleListPreview
+      <ArticlePreview
         v-for="article in articles"
         :key="article.slug"
         :article="article"
-        @update="updateArticleFavorite"
+        @update-article-favorite="updateArticleFavorite"
       />
     </template>
+    <BasePagination
+      :count="articlesCount"
+      :current-page="currentPage"
+      @change-page="changePage"
+    />
   </template>
-  <BasePagination
-    :count="articlesCount"
-    :current-page="currentPage"
-    @change-page="changePage"
-  />
 </template>

@@ -17,6 +17,13 @@ export default {
     },
   },
   emits: ['update-follow', 'update-favorite'],
+  data() {
+    return {
+      isFollowing: false,
+      isFavoriting: false,
+      isDeleting: false,
+    };
+  },
   computed: {
     ...mapState(useUserStore, ['currentUser', 'isAuthenticated']),
     isCurrentUser() {
@@ -24,28 +31,6 @@ export default {
         this.isAuthenticated &&
         this.currentUser.username === this.article.author.username
       );
-    },
-    followUserLabel() {
-      return `${this.article.author.following ? 'Unfollow' : 'Follow'} ${
-        this.article.author.username
-      }`;
-    },
-    followButtonStyle() {
-      return {
-        'btn-secondary': this.article.author.following,
-        'btn-outline-secondary': !this.article.author.following,
-      };
-    },
-    favoriteArticleLabel() {
-      return `${
-        this.article.favorited ? 'Unfavorite Article' : 'Favorite Article'
-      }`;
-    },
-    favoriteButtonStyle() {
-      return {
-        'btn-primary': this.article.favorited,
-        'btn-outline-primary': !this.article.favorited,
-      };
     },
     formatCreatedAt() {
       return formatDate(this.article.createdAt);
@@ -58,11 +43,17 @@ export default {
           name: 'login',
         });
       }
-      const request = this.article.author.following
-        ? unfollowProfile(this.article.author.username)
-        : followProfile(this.article.author.username);
-      await request;
-      this.$emit('update-follow');
+      this.isFollowing = true;
+      try {
+        const request = this.article.author.following
+          ? unfollowProfile(this.article.author.username)
+          : followProfile(this.article.author.username);
+        await request;
+        this.$emit('update-follow');
+      } catch (error) {
+        console.log(error);
+      }
+      this.isFollowing = false;
     },
     async toggleFavorite() {
       if (!this.isAuthenticated) {
@@ -70,17 +61,29 @@ export default {
           name: 'login',
         });
       }
-      const request = this.article.favorited
-        ? deleteArticleFavorite(this.article.slug)
-        : createArticleFavorite(this.article.slug);
-      const res = await request;
-      this.$emit('update-favorite', res.data.article);
+      this.isFavoriting = true;
+      try {
+        const request = this.article.favorited
+          ? deleteArticleFavorite(this.article.slug)
+          : createArticleFavorite(this.article.slug);
+        const res = await request;
+        this.$emit('update-favorite', res.data.article);
+      } catch (error) {
+        console.log(error);
+      }
+      this.isFavoriting = false;
     },
     async handleClick() {
-      await deleteArticle(this.article.slug);
-      this.$router.push({
-        name: 'global-feed',
-      });
+      this.isDeleting = true;
+      try {
+        await deleteArticle(this.article.slug);
+        this.$router.push({
+          name: 'global-feed',
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      this.isDeleting = false;
     },
   },
 };
@@ -131,6 +134,8 @@ export default {
       <button
         aria-label="Delete article"
         class="btn btn-outline-danger btn-sm"
+        type="button"
+        :disabled="isDeleting"
         @click="handleClick"
       >
         <i class="ion-trash-a" /> Delete Article
@@ -140,20 +145,26 @@ export default {
     <template v-else>
       <button
         class="btn btn-sm"
-        :class="followButtonStyle"
+        :class="
+          article.author.following ? 'btn-secondary' : 'btn-outline-secondary'
+        "
+        :disabled="isFollowing"
         @click="toggleFollow"
       >
         <i class="ion-plus-round"></i>
-        &nbsp; {{ followUserLabel }}
+        &nbsp; {{ article.author.following ? 'Unfollow' : 'Follow' }}
+        {{ article.author.username }}
       </button>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm"
-        :class="favoriteButtonStyle"
+        :class="article.favorited ? 'btn-primary' : 'btn-outline-primary'"
+        :disabled="isFavoriting"
         @click="toggleFavorite"
       >
         <i class="ion-heart"></i>
-        &nbsp; {{ favoriteArticleLabel }}
+        &nbsp;
+        {{ article.favorited ? 'Unfavorite Article' : 'Favorite Article' }}
         <span class="counter">({{ article.favoritesCount }})</span>
       </button>
     </template>

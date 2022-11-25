@@ -5,6 +5,8 @@ export default {
   name: 'ArticleCreateView',
   data() {
     return {
+      isLoading: false,
+      errors: null,
       article: {
         title: '',
         description: '',
@@ -16,13 +18,19 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const res = await createArticle(this.article);
-      this.$router.push({
-        name: 'article',
-        params: {
-          slug: res.data.article.slug,
-        },
-      });
+      this.isLoading = true;
+      try {
+        const res = await createArticle(this.article);
+        this.$router.push({
+          name: 'article',
+          params: {
+            slug: res.data.article.slug,
+          },
+        });
+      } catch (error) {
+        this.errors = error.response.data.errors;
+      }
+      this.isLoading = false;
     },
     createArticleTag(tag) {
       if (this.tagInput === '') return;
@@ -41,8 +49,13 @@ export default {
     <div class="container page">
       <div class="row">
         <div class="col-md-10 offset-md-1 col-xs-12">
-          <form @submit.prevent="onSubmit">
-            <fieldset>
+          <ul class="error-messages">
+            <li v-for="(error, field) in errors" :key="field">
+              {{ field }} {{ error ? error[0] : '' }}
+            </li>
+          </ul>
+          <form>
+            <fieldset :disabled="isLoading">
               <fieldset class="form-group">
                 <input
                   v-model="article.title"
@@ -89,7 +102,11 @@ export default {
                   </span>
                 </div>
               </fieldset>
-              <button class="btn btn-lg pull-xs-right btn-primary">
+              <button
+                class="btn btn-lg pull-xs-right btn-primary"
+                type="button"
+                @click="onSubmit"
+              >
                 Publish Article
               </button>
             </fieldset>

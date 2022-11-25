@@ -22,24 +22,17 @@ export default {
         this.currentUser.username === this.profile.username
       );
     },
-    followUserLabel() {
-      return `${this.profile.following ? 'Unfollow' : 'Follow'} ${
-        this.profile.username
-      }`;
-    },
-    followButtonStyle() {
-      return {
-        'btn-secondary': this.profile.following,
-        'btn-outline-secondary': !this.profile.following,
-      };
-    },
   },
   watch: {
     '$route.params.username': {
       async handler() {
         this.profile = {};
-        const res = await getProfile(this.$route.params.username);
-        this.profile = res.data.profile;
+        try {
+          const res = await getProfile(this.$route.params.username);
+          this.profile = res.data.profile;
+        } catch (error) {
+          console.log(error);
+        }
       },
       immediate: true,
     },
@@ -54,8 +47,12 @@ export default {
       const request = this.profile.following
         ? unfollowProfile(this.profile.username)
         : followProfile(this.profile.username);
-      const res = await request;
-      this.profile.following = res.data.profile.following;
+      try {
+        const res = await request;
+        this.profile.following = res.data.profile.following;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
@@ -80,11 +77,14 @@ export default {
             <button
               v-else
               class="btn btn-sm action-btn"
-              :class="followButtonStyle"
+              :class="
+                profile.following ? 'btn-secondary' : 'btn-outline-secondary'
+              "
               @click="toggleFollow"
             >
               <i class="ion-plus-round"></i>
-              &nbsp; {{ followUserLabel }}
+              &nbsp; {{ profile.following ? 'Unfollow' : 'Follow' }}
+              {{ profile.username }}
             </button>
           </div>
         </div>

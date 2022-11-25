@@ -1,22 +1,18 @@
 import { request } from './index';
 
-export function login(user) {
+export function login(data) {
   return request({
     method: 'POST',
     url: '/users/login',
-    data: {
-      user,
-    },
+    data,
   });
 }
 
-export function register(user) {
+export function register(data) {
   return request({
     method: 'POST',
     url: '/users',
-    data: {
-      user,
-    },
+    data,
   });
 }
 
@@ -27,12 +23,10 @@ export function getUser() {
   });
 }
 
-export function updateUser(user) {
+export function updateUser(data) {
   return request({
     method: 'PUT',
     url: '/user',
-    data: {
-      user,
-    },
+    data,
   });
 }

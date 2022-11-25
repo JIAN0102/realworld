@@ -7,15 +7,18 @@ export default {
   name: 'SettingsView',
   data() {
     return {
-      cacheUser: {},
+      isLoading: false,
+      errors: null,
+      user: {},
     };
   },
   computed: {
     ...mapState(useUserStore, ['currentUser']),
   },
   created() {
-    this.cacheUser = {
+    this.user = {
       email: this.currentUser.email,
+      password: '',
       username: this.currentUser.username,
       bio: this.currentUser.bio,
       image: this.currentUser.image,
@@ -24,18 +27,24 @@ export default {
   methods: {
     ...mapActions(useUserStore, ['setCurrentUser', 'setAuthToken']),
     async onSubmit() {
-      Object.keys(this.cacheUser).forEach((key) => {
-        if (!this.cacheUser[key]) delete this.cacheUser[key];
-      });
-      const res = await updateUser(this.cacheUser);
-      this.setCurrentUser(res.data.user);
-      this.setAuthToken(res.data.user.token);
-      this.$router.push({
-        name: 'profile',
-        params: {
-          username: res.data.user.username,
-        },
-      });
+      this.isLoading = true;
+      this.errors = null;
+      try {
+        const res = await updateUser({
+          user: this.user,
+        });
+        this.setCurrentUser(res.data.user);
+        this.setAuthToken(res.data.user.token);
+        this.$router.push({
+          name: 'profile',
+          params: {
+            username: res.data.user.username,
+          },
+        });
+      } catch (error) {
+        this.errors = error.response.data.errors;
+      }
+      this.isLoading = false;
     },
     logout() {
       this.setCurrentUser(null);
@@ -54,12 +63,16 @@ export default {
       <div class="row">
         <div class="col-md-6 offset-md-3 col-xs-12">
           <h1 class="text-xs-center">Your Settings</h1>
-
-          <form @submit.prevent="onSubmit">
-            <fieldset>
+          <ul v-if="errors" class="error-messages">
+            <li v-for="(error, field) in errors" :key="field">
+              {{ field }} {{ error ? error[0] : '' }}
+            </li>
+          </ul>
+          <form>
+            <fieldset :disabled="isLoading">
               <fieldset class="form-group">
                 <input
-                  v-model="cacheUser.image"
+                  v-model="user.image"
                   class="form-control"
                   type="text"
                   placeholder="URL of profile picture"
@@ -67,7 +80,7 @@ export default {
               </fieldset>
               <fieldset class="form-group">
                 <input
-                  v-model="cacheUser.username"
+                  v-model="user.username"
                   class="form-control form-control-lg"
                   type="text"
                   placeholder="Your Name"
@@ -75,7 +88,7 @@ export default {
               </fieldset>
               <fieldset class="form-group">
                 <textarea
-                  v-model="cacheUser.bio"
+                  v-model="user.bio"
                   class="form-control form-control-lg"
                   rows="8"
                   placeholder="Short bio about you"
@@ -83,7 +96,7 @@ export default {
               </fieldset>
               <fieldset class="form-group">
                 <input
-                  v-model="cacheUser.email"
+                  v-model="user.email"
                   class="form-control form-control-lg"
                   type="text"
                   placeholder="Email"
@@ -91,13 +104,17 @@ export default {
               </fieldset>
               <fieldset class="form-group">
                 <input
-                  v-model="cacheUser.password"
+                  v-model="user.password"
                   class="form-control form-control-lg"
                   type="password"
                   placeholder="Password"
                 />
               </fieldset>
-              <button class="btn btn-lg btn-primary pull-xs-right">
+              <button
+                class="btn btn-lg btn-primary pull-xs-right"
+                type="button"
+                @click="onSubmit"
+              >
                 Update Settings
               </button>
             </fieldset>

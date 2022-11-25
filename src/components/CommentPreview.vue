@@ -12,6 +12,11 @@ export default {
     },
   },
   emits: ['delete-comment'],
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   computed: {
     ...mapState(useUserStore, ['currentUser', 'isAuthenticated']),
     isCurrentUser() {
@@ -26,8 +31,14 @@ export default {
   },
   methods: {
     async handleClick() {
-      await deleteComment(this.$route.params.slug, this.comment.id);
-      this.$emit('delete-comment', this.comment.id);
+      this.isLoading = true;
+      try {
+        await deleteComment(this.$route.params.slug, this.comment.id);
+        this.$emit('delete-comment', this.comment.id);
+      } catch (error) {
+        console.log(error);
+      }
+      this.isLoading = false;
     },
   },
 };
@@ -65,7 +76,12 @@ export default {
         {{ comment.author.username }}
       </router-link>
       <span class="date-posted">{{ formatCreatedAt }}</span>
-      <span v-if="isCurrentUser" class="mod-options" @click="handleClick">
+      <span
+        v-if="isCurrentUser"
+        class="mod-options"
+        :style="{ pointerEvents: isLoading ? 'none' : 'auto' }"
+        @click="handleClick"
+      >
         <i class="ion-trash-a"></i>
       </span>
     </div>

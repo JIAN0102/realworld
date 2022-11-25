@@ -15,14 +15,18 @@ export default {
     CommentPreview,
   },
   async beforeRouteEnter(to, from, next) {
-    const res = await Promise.all([
-      getArticle(to.params.slug),
-      getComments(to.params.slug),
-    ]);
-    next((vm) => {
-      vm.article = res[0].data.article;
-      vm.comments = res[1].data.comments;
-    });
+    try {
+      const res = await Promise.all([
+        getArticle(to.params.slug),
+        getComments(to.params.slug),
+      ]);
+      next((vm) => {
+        vm.article = res[0].data.article;
+        vm.comments = res[1].data.comments;
+      });
+    } catch (error) {
+      console.log(error);
+    }
   },
   data() {
     return {

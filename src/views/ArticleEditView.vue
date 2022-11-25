@@ -11,6 +11,8 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
+      errors: null,
       article: {
         title: '',
         description: '',
@@ -22,13 +24,19 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const res = await updateArticle(this.$route.params.slug, this.article);
-      this.$router.push({
-        name: 'article',
-        params: {
-          slug: res.data.article.slug,
-        },
-      });
+      this.isLoading = true;
+      try {
+        const res = await updateArticle(this.$route.params.slug, this.article);
+        this.$router.push({
+          name: 'article',
+          params: {
+            slug: res.data.article.slug,
+          },
+        });
+      } catch (error) {
+        this.errors = error.response.data.errors;
+      }
+      this.isLoading = false;
     },
     createArticleTag(tag) {
       this.article.tagList.push(tag);
@@ -46,8 +54,8 @@ export default {
     <div class="container page">
       <div class="row">
         <div class="col-md-10 offset-md-1 col-xs-12">
-          <form @submit.prevent="onSubmit">
-            <fieldset>
+          <form>
+            <fieldset :disabled="isLoading">
               <fieldset class="form-group">
                 <input
                   v-model="article.title"
@@ -94,7 +102,11 @@ export default {
                   </span>
                 </div>
               </fieldset>
-              <button class="btn btn-lg pull-xs-right btn-primary">
+              <button
+                class="btn btn-lg pull-xs-right btn-primary"
+                type="button"
+                @click="onSubmit"
+              >
                 Publish Article
               </button>
             </fieldset>
