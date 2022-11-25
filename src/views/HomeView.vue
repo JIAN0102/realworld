@@ -10,12 +10,6 @@ export default {
     ArticleList,
     BaseTag,
   },
-  data() {
-    return {
-      currentPage: 1,
-      perPage: 10,
-    };
-  },
   computed: {
     ...mapState(useUserStore, ['isAuthenticated']),
   },

@@ -3,16 +3,6 @@ import { getArticle, createArticle, updateArticle } from '@/services/article';
 
 export default {
   name: 'ArticleEditView',
-  async beforeRouteEnter(to, from, next) {
-    if (to.params.slug) {
-      const res = await getArticle(to.params.slug);
-      next((vm) => {
-        vm.article = res.data.article;
-      });
-      return;
-    }
-    next();
-  },
   data() {
     return {
       isLoading: false,
@@ -28,24 +18,28 @@ export default {
   },
   watch: {
     '$route.params.slug': {
-      async handler(newVal) {
+      handler(newVal) {
         if (newVal) {
-          const res = await getArticle(this.$route.params.slug);
-          this.article = res.data.article;
+          this.fetchArticle();
         } else {
-          this.article = {
-            title: '',
-            description: '',
-            body: '',
-            tagList: [],
-          };
+          this.article = this.$options.data().article;
         }
       },
     },
   },
+  created() {
+    if (this.$route.params.slug) {
+      this.fetchArticle();
+    }
+  },
   methods: {
+    async fetchArticle() {
+      const res = await getArticle(this.$route.params.slug);
+      this.article = res.data.article;
+    },
     async onSubmit() {
       this.isLoading = true;
+
       try {
         const res = this.$route.params.slug
           ? await updateArticle(this.$route.params.slug, {
@@ -63,6 +57,7 @@ export default {
       } catch (error) {
         this.errors = error.response.data.errors;
       }
+
       this.isLoading = false;
     },
     createArticleTag(tag) {

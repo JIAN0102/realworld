@@ -25,16 +25,16 @@ export default {
     };
   },
   methods: {
-    ...mapActions(useUserStore, ['setCurrentUser', 'setAuthToken']),
+    ...mapActions(useUserStore, ['setUser', 'removeUser']),
     async onSubmit() {
       this.isLoading = true;
       this.errors = null;
+
       try {
         const res = await updateUser({
           user: this.user,
         });
-        this.setCurrentUser(res.data.user);
-        this.setAuthToken(res.data.user.token);
+        this.setUser(res.data.user);
         this.$router.push({
           name: 'profile',
           params: {
@@ -44,11 +44,11 @@ export default {
       } catch (error) {
         this.errors = error.response.data.errors;
       }
+
       this.isLoading = false;
     },
     logout() {
-      this.setCurrentUser(null);
-      this.setAuthToken(null);
+      this.removeUser();
       this.$router.push({
         name: 'global-feed',
       });

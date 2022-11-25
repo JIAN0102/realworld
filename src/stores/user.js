@@ -10,9 +10,13 @@ export const useUserStore = defineStore('user', {
     isAuthenticated: !!userStorage.get(),
   }),
   actions: {
-    setFromUser(user) {
+    setUser(user) {
       this.setCurrentUser(user);
       this.setAuthToken(user.token);
+    },
+    removeUser() {
+      this.setCurrentUser(null);
+      this.setAuthToken(null);
     },
     setCurrentUser(user) {
       this.currentUser = user;
@@ -29,7 +33,7 @@ export const useUserStore = defineStore('user', {
     async verifyAuth() {
       if (!this.currentUser && this.isAuthenticated) {
         const res = await getUser();
-        this.setFromUser(res.data.user);
+        this.setUser(res.data.user);
       }
     },
   },

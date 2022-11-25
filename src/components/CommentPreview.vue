@@ -32,12 +32,14 @@ export default {
   methods: {
     async handleClick() {
       this.isLoading = true;
+
       try {
         await deleteComment(this.$route.params.slug, this.comment.id);
         this.$emit('delete-comment', this.comment.id);
       } catch (error) {
         console.log(error);
       }
+
       this.isLoading = false;
     },
   },

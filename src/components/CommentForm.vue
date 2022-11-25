@@ -17,7 +17,9 @@ export default {
   methods: {
     async onSubmit() {
       if (this.content === '') return;
+
       this.isLoading = true;
+
       try {
         const res = await createComment(this.$route.params.slug, {
           comment: {
@@ -29,6 +31,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
+
       this.isLoading = false;
     },
   },

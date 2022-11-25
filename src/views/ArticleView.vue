@@ -3,6 +3,7 @@ import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { getArticle } from '@/services/article';
 import { getComments } from '@/services/comment';
+import { marked } from 'marked';
 import ArticleMeta from '@/components/ArticleMeta.vue';
 import CommentForm from '@/components/CommentForm.vue';
 import CommentPreview from '@/components/CommentPreview.vue';
@@ -37,6 +38,10 @@ export default {
   },
   computed: {
     ...mapState(useUserStore, ['isAuthenticated']),
+    markedArticleBody() {
+      if (!this.article.body) return;
+      return marked(this.article.body);
+    },
     sortedComments() {
       return this.comments
         .slice()
@@ -80,9 +85,7 @@ export default {
     <div class="container page">
       <div class="row article-content">
         <div class="col-md-12">
-          <p>
-            {{ article.body }}
-          </p>
+          <div v-html="markedArticleBody"></div>
           <ul class="tag-list">
             <li v-for="(tag, index) of article.tagList" :key="tag + index">
               <router-link

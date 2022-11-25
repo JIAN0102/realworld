@@ -15,18 +15,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions(useUserStore, [
-      'setFromUser',
-      'setCurrentUser',
-      'setAuthToken',
-    ]),
+    ...mapActions(useUserStore, ['setUser']),
     async onSubmit() {
       this.errors = null;
       try {
         const res = await login({
           user: this.user,
         });
-        this.setFromUser(res.data.user);
+        this.setUser(res.data.user);
         this.$router.push({
           name: this.$route.redirectedFrom?.name || 'global-feed',
         });
