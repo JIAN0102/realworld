@@ -24,6 +24,7 @@ export default {
         vm.article = res[0].data.article;
         vm.comments = res[1].data.comments;
       });
+      return;
     } catch (error) {
       console.log(error);
     }

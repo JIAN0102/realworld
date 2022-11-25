@@ -26,7 +26,7 @@ const routes = [
   {
     path: '/editor',
     name: 'create-article',
-    component: () => import('@/views/ArticleCreateView.vue'),
+    component: () => import('@/views/ArticleEditView.vue'),
     meta: {
       requiresAuth: true,
     },

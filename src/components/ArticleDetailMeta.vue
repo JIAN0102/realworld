@@ -45,10 +45,9 @@ export default {
       }
       this.isFollowing = true;
       try {
-        const request = this.article.author.following
-          ? unfollowProfile(this.article.author.username)
-          : followProfile(this.article.author.username);
-        await request;
+        this.article.author.following
+          ? await unfollowProfile(this.article.author.username)
+          : await followProfile(this.article.author.username);
         this.$emit('update-follow');
       } catch (error) {
         console.log(error);
@@ -63,10 +62,9 @@ export default {
       }
       this.isFavoriting = true;
       try {
-        const request = this.article.favorited
-          ? deleteArticleFavorite(this.article.slug)
-          : createArticleFavorite(this.article.slug);
-        const res = await request;
+        const res = this.article.favorited
+          ? await deleteArticleFavorite(this.article.slug)
+          : await createArticleFavorite(this.article.slug);
         this.$emit('update-favorite', res.data.article);
       } catch (error) {
         console.log(error);

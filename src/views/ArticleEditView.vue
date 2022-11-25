@@ -1,13 +1,17 @@
 <script>
-import { getArticle, updateArticle } from '@/services/article';
+import { getArticle, createArticle, updateArticle } from '@/services/article';
 
 export default {
   name: 'ArticleEditView',
   async beforeRouteEnter(to, from, next) {
-    const res = await getArticle(to.params.slug);
-    next((vm) => {
-      vm.article = res.data.article;
-    });
+    if (to.params.slug) {
+      const res = await getArticle(to.params.slug);
+      next((vm) => {
+        vm.article = res.data.article;
+      });
+      return;
+    }
+    next();
   },
   data() {
     return {
@@ -22,13 +26,34 @@ export default {
       tagInput: '',
     };
   },
+  watch: {
+    '$route.params.slug': {
+      async handler(newVal) {
+        if (newVal) {
+          const res = await getArticle(this.$route.params.slug);
+          this.article = res.data.article;
+        } else {
+          this.article = {
+            title: '',
+            description: '',
+            body: '',
+            tagList: [],
+          };
+        }
+      },
+    },
+  },
   methods: {
     async onSubmit() {
       this.isLoading = true;
       try {
-        const res = await updateArticle(this.$route.params.slug, {
-          article: this.article,
-        });
+        const res = this.$route.params.slug
+          ? await updateArticle(this.$route.params.slug, {
+              article: this.article,
+            })
+          : await createArticle({
+              article: this.article,
+            });
         this.$router.push({
           name: 'article',
           params: {
@@ -41,6 +66,7 @@ export default {
       this.isLoading = false;
     },
     createArticleTag(tag) {
+      if (this.tagInput === '') return;
       this.article.tagList.push(tag);
       this.tagInput = '';
     },

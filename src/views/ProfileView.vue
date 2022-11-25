@@ -44,11 +44,10 @@ export default {
           name: 'login',
         });
       }
-      const request = this.profile.following
-        ? unfollowProfile(this.profile.username)
-        : followProfile(this.profile.username);
       try {
-        const res = await request;
+        const res = this.profile.following
+          ? await unfollowProfile(this.profile.username)
+          : await followProfile(this.profile.username);
         this.profile.following = res.data.profile.following;
       } catch (error) {
         console.log(error);
