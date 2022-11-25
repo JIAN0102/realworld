@@ -12,6 +12,6 @@ app.use(router);
 
 (async () => {
   const userStore = useUserStore();
-  await userStore.checkAuth();
+  await userStore.verifyAuth();
   app.mount('#app');
 })();

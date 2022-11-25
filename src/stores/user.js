@@ -26,7 +26,7 @@ export const useUserStore = defineStore('user', {
         userStorage.remove();
       }
     },
-    async checkAuth() {
+    async verifyAuth() {
       if (!this.currentUser && this.isAuthenticated) {
         const res = await getUser();
         this.setFromUser(res.data.user);

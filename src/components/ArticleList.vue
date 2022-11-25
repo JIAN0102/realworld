@@ -39,45 +39,42 @@ export default {
     async fetchArticles() {
       this.isLoading = true;
 
-      let request = null;
+      try {
+        let res = null;
 
-      switch (this.type) {
-        case 'global-feed':
-          request = getArticles(pageToOffset(this.currentPage));
-          break;
-        case 'my-feed':
-          request = getArticlesByFeed(pageToOffset(this.currentPage));
-          break;
-        case 'tag':
-          request = getArticles({
-            ...pageToOffset(this.currentPage),
-            tag: this.tag,
-          });
-          break;
-        case 'profile':
-          request = getArticles({
-            ...pageToOffset(this.currentPage),
-            author: this.author,
-          });
-          break;
-        case 'profile-favorites':
-          request = getArticles({
-            ...pageToOffset(this.currentPage),
-            favorited: this.author,
-          });
-          break;
-        default:
-          break;
-      }
-
-      if (request !== null) {
-        try {
-          const res = await request;
-          this.articles = res.data.articles;
-          this.articlesCount = res.data.articlesCount;
-        } catch (error) {
-          console.log(error);
+        switch (this.type) {
+          case 'global-feed':
+            res = await getArticles(pageToOffset(this.currentPage));
+            break;
+          case 'my-feed':
+            res = await getArticlesByFeed(pageToOffset(this.currentPage));
+            break;
+          case 'tag':
+            res = await getArticles({
+              ...pageToOffset(this.currentPage),
+              tag: this.tag,
+            });
+            break;
+          case 'profile':
+            res = await getArticles({
+              ...pageToOffset(this.currentPage),
+              author: this.author,
+            });
+            break;
+          case 'profile-favorites':
+            res = await getArticles({
+              ...pageToOffset(this.currentPage),
+              favorited: this.author,
+            });
+            break;
+          default:
+            break;
         }
+
+        this.articles = res.data.articles;
+        this.articlesCount = res.data.articlesCount;
+      } catch (error) {
+        console.log(error);
       }
 
       this.isLoading = false;
@@ -110,11 +107,11 @@ export default {
         :article="article"
         @update-article-favorite="updateArticleFavorite"
       />
+      <BasePagination
+        :count="articlesCount"
+        :current-page="currentPage"
+        @change-page="changePage"
+      />
     </template>
-    <BasePagination
-      :count="articlesCount"
-      :current-page="currentPage"
-      @change-page="changePage"
-    />
   </template>
 </template>

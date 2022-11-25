@@ -99,7 +99,6 @@ export default {
     >
       <img :src="article.author.image" :alt="article.author.username" />
     </router-link>
-
     <div class="info">
       <router-link
         class="author"
@@ -114,7 +113,6 @@ export default {
       </router-link>
       <span class="date">{{ formatCreatedAt }}</span>
     </div>
-
     <template v-if="isCurrentUser">
       <router-link
         aria-label="Edit article"
@@ -139,7 +137,6 @@ export default {
         <i class="ion-trash-a" /> Delete Article
       </button>
     </template>
-
     <template v-else>
       <button
         class="btn btn-sm"

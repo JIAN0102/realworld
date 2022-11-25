@@ -3,14 +3,14 @@ import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { getArticle } from '@/services/article';
 import { getComments } from '@/services/comment';
-import ArticleDetailMeta from '@/components/ArticleDetailMeta.vue';
+import ArticleMeta from '@/components/ArticleMeta.vue';
 import CommentForm from '@/components/CommentForm.vue';
 import CommentPreview from '@/components/CommentPreview.vue';
 
 export default {
   name: 'ArticleView',
   components: {
-    ArticleDetailMeta,
+    ArticleMeta,
     CommentForm,
     CommentPreview,
   },
@@ -68,7 +68,7 @@ export default {
       <div class="container">
         <h1>{{ article.title }}</h1>
 
-        <ArticleDetailMeta
+        <ArticleMeta
           v-if="Object.keys(article).length"
           :article="article"
           @update-follow="updateArticleFollowing"
@@ -104,7 +104,7 @@ export default {
       <hr />
 
       <div class="article-actions">
-        <ArticleDetailMeta
+        <ArticleMeta
           v-if="Object.keys(article).length"
           :article="article"
           @update-follow="updateArticleFollowing"

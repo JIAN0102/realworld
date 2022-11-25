@@ -33,16 +33,18 @@ export default {
           name: 'login',
         });
       }
+
       this.isLoading = true;
-      const request = this.article.favorited
-        ? deleteArticleFavorite(this.article.slug)
-        : createArticleFavorite(this.article.slug);
+
       try {
-        const res = await request;
+        const res = this.article.favorited
+          ? await deleteArticleFavorite(this.article.slug)
+          : await createArticleFavorite(this.article.slug);
         this.$emit('update-article-favorite', res.data.article);
       } catch (error) {
         console.log(error);
       }
+
       this.isLoading = false;
     },
   },
