@@ -1,6 +1,6 @@
 <script>
 import { pageToOffset } from '@/helper';
-import { getArticles, getArticlesByFeed } from '@/services/article';
+import { getArticles } from '@/services/article';
 import ArticlePreview from '@/components/ArticlePreview.vue';
 import BasePagination from '@/components/BasePagination.vue';
 
@@ -15,21 +15,11 @@ export default {
       articles: [],
       articlesCount: 0,
       currentPage: 1,
-      type: 'global-feed',
-      author: '',
-      tag: '',
     };
   },
   watch: {
     $route: {
-      handler(newVal) {
-        this.type = newVal.name;
-        if (newVal.params.username) {
-          this.author = newVal.params.username;
-        }
-        if (newVal.params.tag) {
-          this.tag = newVal.params.tag;
-        }
+      handler() {
         this.fetchArticles();
       },
       immediate: true,
@@ -39,38 +29,35 @@ export default {
     async fetchArticles() {
       this.isLoading = true;
 
+      const config = {
+        type: this.$route.name,
+        params: {
+          ...pageToOffset(this.currentPage),
+        },
+      };
+
+      switch (this.$route.name) {
+        case 'tag':
+          if (this.$route.params.tag) {
+            config.params.tag = this.$route.params.tag;
+          }
+          break;
+        case 'profile':
+          if (this.$route.params.username) {
+            config.params.author = this.$route.params.username;
+          }
+          break;
+        case 'profile-favorites':
+          if (this.$route.params.username) {
+            config.params.favorited = this.$route.params.username;
+          }
+          break;
+        default:
+          break;
+      }
+
       try {
-        let res = null;
-
-        switch (this.type) {
-          case 'global-feed':
-            res = await getArticles(pageToOffset(this.currentPage));
-            break;
-          case 'my-feed':
-            res = await getArticlesByFeed(pageToOffset(this.currentPage));
-            break;
-          case 'tag':
-            res = await getArticles({
-              ...pageToOffset(this.currentPage),
-              tag: this.tag,
-            });
-            break;
-          case 'profile':
-            res = await getArticles({
-              ...pageToOffset(this.currentPage),
-              author: this.author,
-            });
-            break;
-          case 'profile-favorites':
-            res = await getArticles({
-              ...pageToOffset(this.currentPage),
-              favorited: this.author,
-            });
-            break;
-          default:
-            break;
-        }
-
+        const res = await getArticles(config);
         this.articles = res.data.articles;
         this.articlesCount = res.data.articlesCount;
       } catch (error) {

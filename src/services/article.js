@@ -1,17 +1,9 @@
 import { request } from './index';
 
-export function getArticles(params) {
+export function getArticles({ type, params }) {
   return request({
     method: 'GET',
-    url: '/articles',
-    params,
-  });
-}
-
-export function getArticlesByFeed(params) {
-  return request({
-    method: 'GET',
-    url: '/articles/feed',
+    url: `/articles${type === 'my-feed' ? '/feed' : ''}`,
     params,
   });
 }
