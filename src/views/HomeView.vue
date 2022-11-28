@@ -11,7 +11,7 @@ export default {
     BaseTag,
   },
   computed: {
-    ...mapState(useUserStore, ['isAuthenticated']),
+    ...mapState(useUserStore, ['isLoggedIn']),
   },
 };
 </script>
@@ -30,7 +30,7 @@ export default {
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <li v-if="isAuthenticated" class="nav-item">
+              <li v-if="isLoggedIn" class="nav-item">
                 <router-link
                   class="nav-link"
                   active-class="active"

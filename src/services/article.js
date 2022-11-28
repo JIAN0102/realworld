@@ -8,14 +8,14 @@ export function getArticles({ type, params }) {
   });
 }
 
-export function createArticleFavorite(slug) {
+export function favoriteArticle(slug) {
   return request({
     method: 'POST',
     url: `/articles/${slug}/favorite`,
   });
 }
 
-export function deleteArticleFavorite(slug) {
+export function unfavoriteArticle(slug) {
   return request({
     method: 'DELETE',
     url: `/articles/${slug}/favorite`,

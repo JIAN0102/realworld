@@ -93,8 +93,8 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const userStore = useUserStore();
-  const { isAuthenticated } = userStore;
-  if (to.meta.requiresAuth && !isAuthenticated) {
+  const { isLoggedIn } = userStore;
+  if (to.meta.requiresAuth && !isLoggedIn) {
     return {
       name: 'login',
       query: {
@@ -102,7 +102,7 @@ router.beforeEach((to) => {
       },
     };
   }
-  if (to.meta.anonymousOnly && isAuthenticated) {
+  if (to.meta.anonymousOnly && isLoggedIn) {
     return {
       name: 'global-feed',
     };

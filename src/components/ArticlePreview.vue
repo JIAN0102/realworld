@@ -1,10 +1,7 @@
 <script>
 import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
-import {
-  createArticleFavorite,
-  deleteArticleFavorite,
-} from '@/services/article';
+import { favoriteArticle, unfavoriteArticle } from '@/services/article';
 import { formatDate } from '@/helper';
 
 export default {
@@ -21,14 +18,14 @@ export default {
     };
   },
   computed: {
-    ...mapState(useUserStore, ['isAuthenticated']),
+    ...mapState(useUserStore, ['isLoggedIn']),
     formatCreatedAt() {
       return formatDate(this.article.createdAt);
     },
   },
   methods: {
     async toggleFavorite() {
-      if (!this.isAuthenticated) {
+      if (!this.isLoggedIn) {
         this.$router.push({
           name: 'login',
         });
@@ -38,8 +35,8 @@ export default {
 
       try {
         const res = this.article.favorited
-          ? await deleteArticleFavorite(this.article.slug)
-          : await createArticleFavorite(this.article.slug);
+          ? await unfavoriteArticle(this.article.slug)
+          : await favoriteArticle(this.article.slug);
         this.$emit('update-article-favorite', res.data.article);
       } catch (error) {
         console.log(error);

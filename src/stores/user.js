@@ -7,31 +7,23 @@ const userStorage = storage('user');
 export const useUserStore = defineStore('user', {
   state: () => ({
     currentUser: null,
-    isAuthenticated: !!userStorage.get(),
   }),
+  getters: {
+    isLoggedIn() {
+      return !!this.currentUser;
+    },
+  },
   actions: {
     setUser(user) {
-      this.setCurrentUser(user);
-      this.setAuthToken(user.token);
+      this.currentUser = user;
+      userStorage.set(user.token);
     },
     removeUser() {
-      this.setCurrentUser(null);
-      this.setAuthToken(null);
-    },
-    setCurrentUser(user) {
-      this.currentUser = user;
-    },
-    setAuthToken(token) {
-      if (token) {
-        this.isAuthenticated = true;
-        userStorage.set(token);
-      } else {
-        this.isAuthenticated = false;
-        userStorage.remove();
-      }
+      this.currentUser = null;
+      userStorage.remove();
     },
     async verifyAuth() {
-      if (!this.currentUser && this.isAuthenticated) {
+      if (!this.currentUser && userStorage.get()) {
         const res = await getUser();
         this.setUser(res.data.user);
       }

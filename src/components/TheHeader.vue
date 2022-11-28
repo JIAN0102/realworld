@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores/user';
 
 export default {
   computed: {
-    ...mapState(useUserStore, ['currentUser', 'isAuthenticated']),
+    ...mapState(useUserStore, ['currentUser', 'isLoggedIn']),
   },
 };
 </script>
@@ -32,7 +32,7 @@ export default {
             Home
           </router-link>
         </li>
-        <template v-if="isAuthenticated">
+        <template v-if="isLoggedIn">
           <li class="nav-item">
             <router-link
               class="nav-link"

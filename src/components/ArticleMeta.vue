@@ -2,8 +2,8 @@
 import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import {
-  createArticleFavorite,
-  deleteArticleFavorite,
+  favoriteArticle,
+  unfavoriteArticle,
   deleteArticle,
 } from '@/services/article';
 import { followProfile, unfollowProfile } from '@/services/profile';
@@ -25,10 +25,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(useUserStore, ['currentUser', 'isAuthenticated']),
+    ...mapState(useUserStore, ['currentUser', 'isLoggedIn']),
     isCurrentUser() {
       return (
-        this.isAuthenticated &&
+        this.isLoggedIn &&
         this.currentUser.username === this.article.author.username
       );
     },
@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     async toggleFollow() {
-      if (!this.isAuthenticated) {
+      if (!this.isLoggedIn) {
         this.$router.push({
           name: 'login',
         });
@@ -55,7 +55,7 @@ export default {
       this.isFollowing = false;
     },
     async toggleFavorite() {
-      if (!this.isAuthenticated) {
+      if (!this.isLoggedIn) {
         this.$router.push({
           name: 'login',
         });
@@ -63,8 +63,8 @@ export default {
       this.isFavoriting = true;
       try {
         const res = this.article.favorited
-          ? await deleteArticleFavorite(this.article.slug)
-          : await createArticleFavorite(this.article.slug);
+          ? await unfavoriteArticle(this.article.slug)
+          : await favoriteArticle(this.article.slug);
         this.$emit('update-favorite', res.data.article);
       } catch (error) {
         console.log(error);

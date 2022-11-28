@@ -37,7 +37,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(useUserStore, ['isAuthenticated']),
+    ...mapState(useUserStore, ['isLoggedIn']),
     markedArticleBody() {
       if (!this.article.body) return;
       return marked(this.article.body);
@@ -117,7 +117,7 @@ export default {
 
       <div class="row">
         <div class="col-xs-12 col-md-8 offset-md-2">
-          <CommentForm v-if="isAuthenticated" @create-comment="createComment" />
+          <CommentForm v-if="isLoggedIn" @create-comment="createComment" />
           <p v-else>
             <router-link :to="{ name: 'login' }"> Sign in </router-link>
             or

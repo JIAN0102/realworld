@@ -18,10 +18,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(useUserStore, ['currentUser', 'isAuthenticated']),
+    ...mapState(useUserStore, ['currentUser', 'isLoggedIn']),
     isCurrentUser() {
       return (
-        this.isAuthenticated &&
+        this.isLoggedIn &&
         this.currentUser.username === this.comment.author.username
       );
     },

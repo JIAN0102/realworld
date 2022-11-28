@@ -15,11 +15,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(useUserStore, ['currentUser', 'isAuthenticated']),
+    ...mapState(useUserStore, ['currentUser', 'isLoggedIn']),
     isCurrentUser() {
       return (
-        this.isAuthenticated &&
-        this.currentUser.username === this.profile.username
+        this.isLoggedIn && this.currentUser.username === this.profile.username
       );
     },
   },
@@ -39,7 +38,7 @@ export default {
   },
   methods: {
     async toggleFollow() {
-      if (!this.isAuthenticated) {
+      if (!this.isLoggedIn) {
         this.$router.push({
           name: 'login',
         });
