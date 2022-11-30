@@ -24,7 +24,7 @@ export default {
         });
         this.setUser(res.data.user);
         this.$router.push({
-          name: this.$route.redirectedFrom?.name || 'global-feed',
+          name: 'global-feed',
         });
       } catch (error) {
         this.errors = error.response.data.errors;

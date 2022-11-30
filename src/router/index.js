@@ -97,9 +97,6 @@ router.beforeEach((to) => {
   if (to.meta.requiresAuth && !isLoggedIn) {
     return {
       name: 'login',
-      query: {
-        redirect: to.fullPath,
-      },
     };
   }
   if (to.meta.anonymousOnly && isLoggedIn) {
