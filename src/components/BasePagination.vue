@@ -72,6 +72,7 @@ export default {
   },
   methods: {
     handleChange(page) {
+      if (page === '...') return;
       this.$emit('change-page', page);
     },
   },

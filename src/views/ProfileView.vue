@@ -11,7 +11,8 @@ export default {
   },
   data() {
     return {
-      profile: {},
+      isLoading: false,
+      profile: null,
     };
   },
   computed: {
@@ -24,19 +25,26 @@ export default {
   },
   watch: {
     '$route.params.username': {
-      async handler() {
-        this.profile = {};
-        try {
-          const res = await getProfile(this.$route.params.username);
-          this.profile = res.data.profile;
-        } catch (error) {
-          console.log(error);
-        }
+      handler() {
+        this.fetchProfile();
       },
       immediate: true,
     },
   },
   methods: {
+    async fetchProfile() {
+      this.isLoading = true;
+      this.profile = null;
+
+      try {
+        const res = await getProfile(this.$route.params.username);
+        this.profile = res.data.profile;
+      } catch (error) {
+        console.log(error);
+      }
+
+      this.isLoading = false;
+    },
     async toggleFollow() {
       if (!this.isLoggedIn) {
         this.$router.push({
@@ -62,28 +70,35 @@ export default {
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-md-10 offset-md-1">
-            <img :src="profile.image" class="user-img" />
-            <h4>{{ profile.username }}</h4>
-            <p>{{ profile.bio }}</p>
-            <router-link
-              v-if="isCurrentUser"
-              class="btn btn-sm btn-outline-secondary action-btn"
-              :to="{ name: 'settings' }"
-            >
-              <i class="ion-gear-a"></i> Edit Profile Settings
-            </router-link>
-            <button
-              v-else
-              class="btn btn-sm action-btn"
-              :class="
-                profile.following ? 'btn-secondary' : 'btn-outline-secondary'
-              "
-              @click="toggleFollow"
-            >
-              <i class="ion-plus-round"></i>
-              &nbsp; {{ profile.following ? 'Unfollow' : 'Follow' }}
-              {{ profile.username }}
-            </button>
+            <div v-if="isLoading">Loading profile...</div>
+            <template v-else>
+              <template v-if="profile">
+                <img :src="profile.image" class="user-img" />
+                <h4>{{ profile.username }}</h4>
+                <p>{{ profile.bio }}</p>
+                <router-link
+                  v-if="isCurrentUser"
+                  class="btn btn-sm btn-outline-secondary action-btn"
+                  :to="{ name: 'settings' }"
+                >
+                  <i class="ion-gear-a"></i> Edit Profile Settings
+                </router-link>
+                <button
+                  v-else
+                  class="btn btn-sm action-btn"
+                  :class="
+                    profile.following
+                      ? 'btn-secondary'
+                      : 'btn-outline-secondary'
+                  "
+                  @click="toggleFollow"
+                >
+                  <i class="ion-plus-round"></i>
+                  &nbsp; {{ profile.following ? 'Unfollow' : 'Follow' }}
+                  {{ profile.username }}
+                </button>
+              </template>
+            </template>
           </div>
         </div>
       </div>

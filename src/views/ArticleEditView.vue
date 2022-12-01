@@ -3,6 +3,16 @@ import { getArticle, createArticle, updateArticle } from '@/services/article';
 
 export default {
   name: 'ArticleEditView',
+  async beforeRouteEnter(to, from, next) {
+    if (to.params.slug) {
+      const res = await getArticle(to.params.slug);
+      next((vm) => {
+        vm.article = res.data.article;
+      });
+      return;
+    }
+    next();
+  },
   data() {
     return {
       isLoading: false,
@@ -26,11 +36,6 @@ export default {
         }
       },
     },
-  },
-  created() {
-    if (this.$route.params.slug) {
-      this.fetchArticle();
-    }
   },
   methods: {
     async fetchArticle() {

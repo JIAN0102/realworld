@@ -7,11 +7,12 @@ import { useUserStore } from '@/stores/user';
 
 const app = createApp(App);
 
-app.use(createPinia());
-
 (async () => {
+  app.use(createPinia());
+
   const userStore = useUserStore();
   await userStore.verifyAuth();
+
   app.use(router);
   app.mount('#app');
 })();
