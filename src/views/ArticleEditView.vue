@@ -61,9 +61,8 @@ export default {
         });
       } catch (error) {
         this.errors = error.response.data.errors;
+        this.isLoading = false;
       }
-
-      this.isLoading = false;
     },
     createArticleTag(tag) {
       if (this.tagInput === '') return;
