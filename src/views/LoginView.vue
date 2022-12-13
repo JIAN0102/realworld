@@ -7,6 +7,7 @@ export default {
   name: 'LoginView',
   data() {
     return {
+      isLoading: false,
       errors: null,
       user: {
         email: '',
@@ -17,7 +18,9 @@ export default {
   methods: {
     ...mapActions(useUserStore, ['setUser']),
     async onSubmit() {
+      this.isLoading = true;
       this.errors = null;
+
       try {
         const res = await login({
           user: this.user,
@@ -29,6 +32,8 @@ export default {
       } catch (error) {
         this.errors = error.response.data.errors;
       }
+
+      this.isLoading = false;
     },
   },
 };
@@ -51,29 +56,31 @@ export default {
           </ul>
 
           <form>
-            <fieldset class="form-group">
-              <input
-                v-model="user.email"
-                class="form-control form-control-lg"
-                type="text"
-                placeholder="Email"
-              />
+            <fieldset :disabled="isLoading">
+              <fieldset class="form-group">
+                <input
+                  v-model="user.email"
+                  class="form-control form-control-lg"
+                  type="text"
+                  placeholder="Email"
+                />
+              </fieldset>
+              <fieldset class="form-group">
+                <input
+                  v-model="user.password"
+                  class="form-control form-control-lg"
+                  type="password"
+                  placeholder="Password"
+                />
+              </fieldset>
+              <button
+                class="btn btn-lg btn-primary pull-xs-right"
+                type="button"
+                @click="onSubmit"
+              >
+                Sign in
+              </button>
             </fieldset>
-            <fieldset class="form-group">
-              <input
-                v-model="user.password"
-                class="form-control form-control-lg"
-                type="password"
-                placeholder="Password"
-              />
-            </fieldset>
-            <button
-              class="btn btn-lg btn-primary pull-xs-right"
-              type="button"
-              @click="onSubmit"
-            >
-              Sign in
-            </button>
           </form>
         </div>
       </div>
