@@ -47,40 +47,46 @@ export default {
 </script>
 
 <template>
-  <div class="card">
-    <div class="card-block">
-      <p class="card-text">
+  <div class="border border-[#e5e5e5] rounded">
+    <div class="p-5">
+      <p>
         {{ comment.body }}
       </p>
     </div>
-    <div class="card-footer">
-      <router-link
-        class="comment-author"
-        :to="{
-          name: 'profile',
-          params: {
-            username: comment.author.username,
-          },
-        }"
-      >
-        <img :src="comment.author.image" class="comment-author-img" alt="" />
-      </router-link>
-      &nbsp;
-      <router-link
-        class="comment-author"
-        :to="{
-          name: 'profile',
-          params: {
-            username: comment.author.username,
-          },
-        }"
-      >
-        {{ comment.author.username }}
-      </router-link>
-      <span class="date-posted">{{ formatCreatedAt }}</span>
+    <div
+      class="flex justify-between items-center px-5 py-3 text-sm border-t bg-[#f5f5f5] border-[#e5e5e5]"
+    >
+      <div class="flex items-center">
+        <router-link
+          :to="{
+            name: 'profile',
+            params: {
+              username: comment.author.username,
+            },
+          }"
+        >
+          <img
+            class="w-5 h-5 rounded-full"
+            :src="comment.author.image"
+            alt=""
+          />
+        </router-link>
+        <router-link
+          class="ml-2 text-primary"
+          :to="{
+            name: 'profile',
+            params: {
+              username: comment.author.username,
+            },
+          }"
+        >
+          {{ comment.author.username }}
+        </router-link>
+        <span class="ml-1 text-[#bbb]">{{ formatCreatedAt }}</span>
+      </div>
       <span
         v-if="isCurrentUser"
-        class="mod-options"
+        class="text-[#333] text-base cursor-pointer opacity-60 hover:opacity-100"
         :style="{ pointerEvents: isLoading ? 'none' : 'auto' }"
         @click="handleClick"
       >

@@ -28,7 +28,7 @@ export default {
       <router-link
         v-for="tag in tags"
         :key="tag"
-        class="px-2 py-0.5 text-xs text-white bg-[#818a91] rounded-full hover:bg-[#687077]"
+        class="px-2 py-0.5 text-sm text-white bg-[#818a91] rounded-full hover:bg-[#687077]"
         :to="{
           name: 'tag',
           params: {

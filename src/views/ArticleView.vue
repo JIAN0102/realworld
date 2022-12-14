@@ -110,7 +110,7 @@ export default {
         />
       </div>
 
-      <div class="w-2/3 mx-auto">
+      <div class="space-y-3 md:w-2/3 md:mx-auto">
         <CommentForm v-if="isLoggedIn" @create-comment="createComment" />
         <p v-else>
           <router-link :to="{ name: 'login' }"> Sign in </router-link>

@@ -19,7 +19,7 @@ export default {
 <template>
   <div class="p-8 text-white text-center bg-primary">
     <div class="max-w-[1140px] px-[15px] mx-auto">
-      <h1 class="font-titillium text-[56px]">conduit</h1>
+      <h1 class="mb-2 font-titillium text-[56px] leading-[1.1]">conduit</h1>
       <p class="font-light text-2xl">A place to share your knowledge.</p>
     </div>
   </div>
@@ -33,10 +33,11 @@ export default {
               <li v-if="isLoggedIn">
                 <router-link
                   class="block px-4 py-2 border-b-2"
-                  :class="{
-                    'text-[#aaa] border-transparent': $route.name !== 'my-feed',
-                    'text-primary border-primary': $route.name === 'my-feed',
-                  }"
+                  :class="
+                    $route.name === 'my-feed'
+                      ? 'text-primary border-primary'
+                      : 'text-[#aaa] border-transparent'
+                  "
                   :to="{
                     name: 'my-feed',
                   }"
@@ -47,12 +48,11 @@ export default {
               <li>
                 <router-link
                   class="block px-4 py-2 border-b-2"
-                  :class="{
-                    'text-[#aaa] border-transparent':
-                      $route.name !== 'global-feed',
-                    'text-primary border-primary':
-                      $route.name === 'global-feed',
-                  }"
+                  :class="
+                    $route.name === 'global-feed'
+                      ? 'text-primary border-primary'
+                      : 'text-[#aaa] border-transparent'
+                  "
                   :to="{
                     name: 'global-feed',
                   }"
@@ -63,10 +63,11 @@ export default {
               <li v-if="$route.params.tag">
                 <router-link
                   class="block px-4 py-2 border-b-2"
-                  :class="{
-                    'text-[#aaa] border-transparent': $route.name !== 'tag',
-                    'text-primary border-primary': $route.name === 'tag',
-                  }"
+                  :class="
+                    $route.name === 'tag'
+                      ? 'text-primary border-primary'
+                      : 'text-[#aaa] border-transparent'
+                  "
                   :to="{
                     name: 'tag',
                     tag: $route.params.tag,

@@ -80,16 +80,15 @@ export default {
 </script>
 
 <template>
-  <ul class="pagination">
-    <li
-      v-for="page in calculatePage"
-      :key="page"
-      class="page-item"
-      :class="{ active: currentPage === page }"
-    >
+  <ul class="flex">
+    <li v-for="page in calculatePage" :key="page">
       <a
         :aria-label="`Go to page ${page}`"
-        class="page-link"
+        class="block px-3 py-2 -ml-[1px] border hover:bg-[#eceeef]"
+        :class="{
+          'text-primary bg-white border-[#ddd]': currentPage !== page,
+          'text-white bg-primary border-primary': currentPage === page,
+        }"
         href="javascript:"
         @click="handleChange(page)"
         >{{ page }}</a

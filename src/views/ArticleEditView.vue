@@ -136,7 +136,7 @@ export default {
             </fieldset>
             <div class="text-right">
               <button
-                class="btn btn-lg pull-xs-right btn-primary"
+                class="inline-block px-6 py-3 text-xl text-white leading-tight bg-primary rounded"
                 type="button"
                 @click="onSubmit"
               >

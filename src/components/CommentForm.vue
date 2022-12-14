@@ -47,10 +47,12 @@ export default {
       rows="3"
       :disabled="isLoading"
     ></textarea>
-    <div class="flex justify-between px-5 py-3 border-t border-[#e5e5e5]">
+    <div
+      class="flex justify-between px-5 py-3 bg-[#f5f5f5] border-t border-[#e5e5e5]"
+    >
       <img class="w-[30px] h-[30px] rounded-full" :src="currentUser.image" />
       <button
-        class="btn btn-sm btn-primary"
+        class="inline-block px-2 py-1 text-sm text-white bg-primary rounded"
         type="button"
         :disabled="isLoading || content === ''"
         @click="onSubmit"

@@ -119,55 +119,55 @@ export default {
         <span class="block text-xs text-[#bbb]">{{ formatCreatedAt }}</span>
       </div>
     </div>
-    <template v-if="isCurrentUser">
-      <router-link
-        aria-label="Edit article"
-        class="btn btn-outline-secondary btn-sm"
-        :to="{
-          name: 'edit-article',
-          params: {
-            slug: article.slug,
-          },
-        }"
-      >
-        <i class="ion-edit space"></i> Edit Article
-      </router-link>
-      &nbsp;&nbsp;
-      <button
-        aria-label="Delete article"
-        class="btn btn-outline-danger btn-sm"
-        type="button"
-        :disabled="isDeleting"
-        @click="handleClick"
-      >
-        <i class="ion-trash-a" /> Delete Article
-      </button>
-    </template>
-    <template v-else>
-      <button
-        class="btn btn-sm"
-        :class="
-          article.author.following ? 'btn-secondary' : 'btn-outline-secondary'
-        "
-        :disabled="isFollowing"
-        @click="toggleFollow"
-      >
-        <i class="ion-plus-round"></i>
-        &nbsp; {{ article.author.following ? 'Unfollow' : 'Follow' }}
-        {{ article.author.username }}
-      </button>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm"
-        :class="article.favorited ? 'btn-primary' : 'btn-outline-primary'"
-        :disabled="isFavoriting"
-        @click="toggleFavorite"
-      >
-        <i class="ion-heart"></i>
-        &nbsp;
-        {{ article.favorited ? 'Unfavorite Article' : 'Favorite Article' }}
-        <span class="counter">({{ article.favoritesCount }})</span>
-      </button>
-    </template>
+    <div class="flex gap-x-2">
+      <template v-if="isCurrentUser">
+        <router-link
+          aria-label="Edit article"
+          class="inline-block px-2 py-1 text-sm text-[#ccc] leading-tight border border-[#ccc] rounded hover:text-[#373a3c] hover:bg-[#ccc]"
+          :to="{
+            name: 'edit-article',
+            params: {
+              slug: article.slug,
+            },
+          }"
+        >
+          <i class="ion-edit space"></i> Edit Article
+        </router-link>
+        <button
+          aria-label="Delete article"
+          class="inline-block px-2 py-1 text-sm text-[#b85c5c] leading-tight border border-[#b85c5c] rounded hover:text-white hover:bg-[#b85c5c]"
+          type="button"
+          :disabled="isDeleting"
+          @click="handleClick"
+        >
+          <i class="ion-trash-a" /> Delete Article
+        </button>
+      </template>
+      <template v-else>
+        <button
+          class="inline-block px-2 py-1 text-sm leading-tight border border-[#ccc] rounded hover:text-[#373a3c] hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
+          :class="
+            article.author.following ? 'text-[#373a3c] bg-white' : 'text-[#ccc]'
+          "
+          :disabled="isFollowing"
+          @click="toggleFollow"
+        >
+          <i class="ion-plus-round"></i>
+          &nbsp; {{ article.author.following ? 'Unfollow' : 'Follow' }}
+          {{ article.author.username }}
+        </button>
+        <button
+          class="inline-block px-2 py-1 text-sm leading-tight border border-primary rounded hover:text-white hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
+          :class="article.favorited ? 'text-white bg-primary' : 'text-primary'"
+          :disabled="isFavoriting"
+          @click="toggleFavorite"
+        >
+          <i class="ion-heart"></i>
+          &nbsp;
+          {{ article.favorited ? 'Unfavorite Article' : 'Favorite Article' }}
+          <span class="counter">({{ article.favoritesCount }})</span>
+        </button>
+      </template>
+    </div>
   </div>
 </template>

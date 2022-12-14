@@ -82,9 +82,11 @@ export default {
 </script>
 
 <template>
-  <div v-if="isLoading" class="article-preview">Loading articles...</div>
+  <div v-if="isLoading" class="py-6 border-t border-black/10">
+    Loading articles...
+  </div>
   <template v-else>
-    <div v-if="!articles.length" class="article-preview">
+    <div v-if="!articles.length" class="py-6 border-t border-black/10">
       No articles are here... yet.
     </div>
     <template v-else>

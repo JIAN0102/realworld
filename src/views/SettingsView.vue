@@ -111,19 +111,25 @@ export default {
                 placeholder="Password"
               />
             </fieldset>
-            <button
-              class="btn btn-lg btn-primary pull-xs-right"
-              type="button"
-              @click="onSubmit"
-            >
-              Update Settings
-            </button>
+            <div class="text-right">
+              <button
+                class="inline-block px-6 py-3 text-xl text-white leading-tight bg-primary rounded"
+                type="button"
+                @click="onSubmit"
+              >
+                Update Settings
+              </button>
+            </div>
           </fieldset>
         </form>
-        <hr />
-        <button class="btn btn-outline-danger" @click.prevent="logout">
-          Or click here to logout.
-        </button>
+        <div class="pt-4 mt-4 border-t border-black/10">
+          <button
+            class="inline-block px-4 py-2 text-[#b85c5c] leading-tight border border-[#b85c5c] rounded hover:text-white hover:bg-[#b85c5c]"
+            @click.prevent="logout"
+          >
+            Or click here to logout.
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -48,7 +48,7 @@ export default {
                   name: 'create-article',
                 }"
               >
-                <i class="ion-compose" />&nbsp;New Article
+                <i class="ion-compose"></i>&nbsp;New Article
               </router-link>
             </li>
             <li>
