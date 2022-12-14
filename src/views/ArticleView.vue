@@ -3,7 +3,6 @@ import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { getArticle } from '@/services/article';
 import { getComments } from '@/services/comment';
-import { marked } from 'marked';
 import ArticleMeta from '@/components/ArticleMeta.vue';
 import CommentForm from '@/components/CommentForm.vue';
 import CommentPreview from '@/components/CommentPreview.vue';
@@ -38,10 +37,6 @@ export default {
   },
   computed: {
     ...mapState(useUserStore, ['isLoggedIn']),
-    markedArticleBody() {
-      if (!this.article.body) return;
-      return marked(this.article.body);
-    },
     sortedComments() {
       return this.comments
         .slice()
@@ -68,45 +63,45 @@ export default {
 </script>
 
 <template>
-  <div class="article-page">
-    <div class="banner">
-      <div class="container">
-        <h1>{{ article.title }}</h1>
+  <div class="py-8 text-white bg-[#333]">
+    <div class="max-w-[1140px] px-[15px] mx-auto">
+      <h1 class="mb-8 font-semibold text-[44px] leading-[1.1]">
+        {{ article.title }}
+      </h1>
 
-        <ArticleMeta
-          v-if="Object.keys(article).length"
-          :article="article"
-          @update-follow="updateArticleFollowing"
-          @update-favorite="updateArticleFavorite"
-        />
-      </div>
+      <ArticleMeta
+        v-if="Object.keys(article).length"
+        :article="article"
+        @update-follow="updateArticleFollowing"
+        @update-favorite="updateArticleFavorite"
+      />
     </div>
+  </div>
 
-    <div class="container page">
+  <div class="pt-8">
+    <div class="max-w-[1140px] px-[15px] mx-auto">
       <div class="row article-content">
-        <div class="col-md-12">
-          <div v-html="markedArticleBody"></div>
-          <ul class="tag-list">
-            <li v-for="(tag, index) of article.tagList" :key="tag + index">
-              <router-link
-                class="tag-default tag-pill tag-outline"
-                :to="{
-                  name: 'tag',
-                  params: {
-                    tag: tag,
-                  },
-                }"
-              >
-                {{ tag }}
-              </router-link>
-            </li>
-          </ul>
+        <div class="font-serif text-lg">
+          {{ article.body }}
         </div>
+        <ul class="flex gap-1 mt-8">
+          <li v-for="(tag, index) of article.tagList" :key="tag + index">
+            <router-link
+              class="px-2 font-light text-sm text-[#aaa] border border-[#ddd] rounded-full"
+              :to="{
+                name: 'tag',
+                params: {
+                  tag: tag,
+                },
+              }"
+            >
+              {{ tag }}
+            </router-link>
+          </li>
+        </ul>
       </div>
 
-      <hr />
-
-      <div class="article-actions">
+      <div class="pt-6 mt-8 mb-12 border-t border-black/10">
         <ArticleMeta
           v-if="Object.keys(article).length"
           :article="article"
@@ -115,23 +110,21 @@ export default {
         />
       </div>
 
-      <div class="row">
-        <div class="col-xs-12 col-md-8 offset-md-2">
-          <CommentForm v-if="isLoggedIn" @create-comment="createComment" />
-          <p v-else>
-            <router-link :to="{ name: 'login' }"> Sign in </router-link>
-            or
-            <router-link :to="{ name: 'register' }"> sign up </router-link>
-            to add comments on this article.
-          </p>
+      <div class="w-2/3 mx-auto">
+        <CommentForm v-if="isLoggedIn" @create-comment="createComment" />
+        <p v-else>
+          <router-link :to="{ name: 'login' }"> Sign in </router-link>
+          or
+          <router-link :to="{ name: 'register' }"> sign up </router-link>
+          to add comments on this article.
+        </p>
 
-          <CommentPreview
-            v-for="comment in sortedComments"
-            :key="comment.id"
-            :comment="comment"
-            @delete-comment="deleteComment"
-          />
-        </div>
+        <CommentPreview
+          v-for="comment in sortedComments"
+          :key="comment.id"
+          :comment="comment"
+          @delete-comment="deleteComment"
+        />
       </div>
     </div>
   </div>

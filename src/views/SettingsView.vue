@@ -58,74 +58,72 @@ export default {
 </script>
 
 <template>
-  <div class="settings-page">
-    <div class="container page">
-      <div class="row">
-        <div class="col-md-6 offset-md-3 col-xs-12">
-          <h1 class="text-xs-center">Your Settings</h1>
+  <div class="pt-6">
+    <div class="max-w-[1140px] px-[15px] mx-auto">
+      <div class="md:w-1/2 md:mx-auto">
+        <h1 class="text-[40px] text-center">Your Settings</h1>
 
-          <ul v-if="errors" class="error-messages">
-            <li v-for="(error, field) in errors" :key="field">
-              {{ field }} {{ error ? error[0] : '' }}
-            </li>
-          </ul>
+        <ul v-if="errors" class="error-messages">
+          <li v-for="(error, field) in errors" :key="field">
+            {{ field }} {{ error ? error[0] : '' }}
+          </li>
+        </ul>
 
-          <form>
-            <fieldset :disabled="isLoading">
-              <fieldset class="form-group">
-                <input
-                  v-model="user.image"
-                  class="form-control"
-                  type="text"
-                  placeholder="URL of profile picture"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  v-model="user.username"
-                  class="form-control form-control-lg"
-                  type="text"
-                  placeholder="Your Name"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <textarea
-                  v-model="user.bio"
-                  class="form-control form-control-lg"
-                  rows="8"
-                  placeholder="Short bio about you"
-                ></textarea>
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  v-model="user.email"
-                  class="form-control form-control-lg"
-                  type="text"
-                  placeholder="Email"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  v-model="user.password"
-                  class="form-control form-control-lg"
-                  type="password"
-                  placeholder="Password"
-                />
-              </fieldset>
-              <button
-                class="btn btn-lg btn-primary pull-xs-right"
-                type="button"
-                @click="onSubmit"
-              >
-                Update Settings
-              </button>
+        <form>
+          <fieldset :disabled="isLoading" class="space-y-4">
+            <fieldset class="form-group">
+              <input
+                v-model="user.image"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999]"
+                type="text"
+                placeholder="URL of profile picture"
+              />
             </fieldset>
-          </form>
-          <hr />
-          <button class="btn btn-outline-danger" @click.prevent="logout">
-            Or click here to logout.
-          </button>
-        </div>
+            <fieldset class="form-group">
+              <input
+                v-model="user.username"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999]"
+                type="text"
+                placeholder="Your Name"
+              />
+            </fieldset>
+            <fieldset class="form-group">
+              <textarea
+                v-model="user.bio"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999]"
+                rows="8"
+                placeholder="Short bio about you"
+              ></textarea>
+            </fieldset>
+            <fieldset class="form-group">
+              <input
+                v-model="user.email"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999]"
+                type="text"
+                placeholder="Email"
+              />
+            </fieldset>
+            <fieldset class="form-group">
+              <input
+                v-model="user.password"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999]"
+                type="password"
+                placeholder="Password"
+              />
+            </fieldset>
+            <button
+              class="btn btn-lg btn-primary pull-xs-right"
+              type="button"
+              @click="onSubmit"
+            >
+              Update Settings
+            </button>
+          </fieldset>
+        </form>
+        <hr />
+        <button class="btn btn-outline-danger" @click.prevent="logout">
+          Or click here to logout.
+        </button>
       </div>
     </div>
   </div>

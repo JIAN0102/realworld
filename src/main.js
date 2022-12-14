@@ -5,6 +5,8 @@ import App from './App.vue';
 import router from './router';
 import { useUserStore } from '@/stores/user';
 
+import './assets/index.css';
+
 const app = createApp(App);
 
 (async () => {

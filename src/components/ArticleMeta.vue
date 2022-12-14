@@ -88,20 +88,9 @@ export default {
 </script>
 
 <template>
-  <div class="article-meta">
-    <router-link
-      :to="{
-        name: 'profile',
-        params: {
-          username: article.author.username,
-        },
-      }"
-    >
-      <img :src="article.author.image" :alt="article.author.username" />
-    </router-link>
-    <div class="info">
+  <div class="flex items-center">
+    <div class="flex items-center mr-6">
       <router-link
-        class="author"
         :to="{
           name: 'profile',
           params: {
@@ -109,9 +98,26 @@ export default {
           },
         }"
       >
-        {{ article.author.username }}
+        <img
+          class="w-8 h-8 rounded-full object-cover"
+          :src="article.author.image"
+          :alt="article.author.username"
+        />
       </router-link>
-      <span class="date">{{ formatCreatedAt }}</span>
+      <div class="ml-2">
+        <router-link
+          class="block font-medium"
+          :to="{
+            name: 'profile',
+            params: {
+              username: article.author.username,
+            },
+          }"
+        >
+          {{ article.author.username }}
+        </router-link>
+        <span class="block text-xs text-[#bbb]">{{ formatCreatedAt }}</span>
+      </div>
     </div>
     <template v-if="isCurrentUser">
       <router-link

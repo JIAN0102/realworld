@@ -49,21 +49,10 @@ export default {
 </script>
 
 <template>
-  <div class="article-preview">
-    <div class="article-meta">
-      <router-link
-        :to="{
-          name: 'profile',
-          params: {
-            username: article.author.username,
-          },
-        }"
-      >
-        <img :src="article.author.image" :alt="article.author.username" />
-      </router-link>
-      <div class="info">
+  <div class="py-6 border-t border-black/10">
+    <div class="flex justify-between items-center mb-4">
+      <div class="flex items-center mr-4">
         <router-link
-          class="author"
           :to="{
             name: 'profile',
             params: {
@@ -71,15 +60,32 @@ export default {
             },
           }"
         >
-          {{ article.author.username }}
+          <img
+            class="w-8 h-8 rounded-full object-cover"
+            :src="article.author.image"
+            :alt="article.author.username"
+          />
         </router-link>
-        <span class="date">{{ formatCreatedAt }}</span>
+        <div class="ml-2">
+          <router-link
+            class="block font-medium text-primary"
+            :to="{
+              name: 'profile',
+              params: {
+                username: article.author.username,
+              },
+            }"
+          >
+            {{ article.author.username }}
+          </router-link>
+          <span class="block text-xs text-[#bbb]">{{ formatCreatedAt }}</span>
+        </div>
       </div>
       <button
-        class="btn btn-sm pull-xs-right"
+        class="inline-block px-2 py-1 text-sm leading-tight border border-primary rounded hover:text-white hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
         :class="{
-          'btn-primary': article.favorited,
-          'btn-outline-primary': !article.favorited,
+          'text-white bg-primary': article.favorited,
+          'text-primary': !article.favorited,
         }"
         :disabled="isLoading"
         @click="toggleFavorite"
@@ -88,7 +94,6 @@ export default {
       </button>
     </div>
     <router-link
-      class="preview-link"
       :to="{
         name: 'article',
         params: {
@@ -96,18 +101,22 @@ export default {
         },
       }"
     >
-      <h1>{{ article.title }}</h1>
-      <p>{{ article.description }}</p>
-      <span>Read more...</span>
-      <ul class="tag-list">
-        <li
-          v-for="(tag, index) of article.tagList"
-          :key="index"
-          class="tag-default tag-pill tag-outline"
-        >
-          <span>{{ tag }}</span>
-        </li>
-      </ul>
+      <h2 class="mb-1 font-semibold text-2xl leading-[1.1]">
+        {{ article.title }}
+      </h2>
+      <p class="mb-4 font-light text-[#999]">{{ article.description }}</p>
+      <div class="flex flex-wrap">
+        <span>Read more...</span>
+        <ul class="flex flex-wrap justify-end flex-1 gap-1 ml-4">
+          <li
+            v-for="(tag, index) of article.tagList"
+            :key="index"
+            class="px-2 font-light text-sm text-[#aaa] border border-[#ddd] rounded-full"
+          >
+            <span>{{ tag }}</span>
+          </li>
+        </ul>
+      </div>
     </router-link>
   </div>
 </template>

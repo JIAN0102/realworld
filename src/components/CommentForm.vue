@@ -39,18 +39,16 @@ export default {
 </script>
 
 <template>
-  <form class="card comment-form">
-    <div class="card-block">
-      <textarea
-        v-model.trim="content"
-        class="form-control"
-        placeholder="Write a comment..."
-        rows="3"
-        :disabled="isLoading"
-      ></textarea>
-    </div>
-    <div class="card-footer">
-      <img :src="currentUser.image" class="comment-author-img" />
+  <form class="border border-[#e5e5e5] rounded">
+    <textarea
+      v-model.trim="content"
+      class="block w-full p-5 text-[#55595c] leading-tight bg-white rounded outline-none"
+      placeholder="Write a comment..."
+      rows="3"
+      :disabled="isLoading"
+    ></textarea>
+    <div class="flex justify-between px-5 py-3 border-t border-[#e5e5e5]">
+      <img class="w-[30px] h-[30px] rounded-full" :src="currentUser.image" />
       <button
         class="btn btn-sm btn-primary"
         type="button"

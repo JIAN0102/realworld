@@ -22,20 +22,22 @@ export default {
 </script>
 
 <template>
-  <div v-if="isLoading" class="article-preview">Loading tags...</div>
+  <div v-if="isLoading">Loading tags...</div>
   <template v-else>
-    <router-link
-      v-for="tag in tags"
-      :key="tag"
-      class="tag-pill tag-default"
-      :to="{
-        name: 'tag',
-        params: {
-          tag: tag,
-        },
-      }"
-    >
-      {{ tag }}
-    </router-link>
+    <div class="flex flex-wrap gap-1 mt-1">
+      <router-link
+        v-for="tag in tags"
+        :key="tag"
+        class="px-2 py-0.5 text-xs text-white bg-[#818a91] rounded-full hover:bg-[#687077]"
+        :to="{
+          name: 'tag',
+          params: {
+            tag: tag,
+          },
+        }"
+      >
+        {{ tag }}
+      </router-link>
+    </div>
   </template>
 </template>
