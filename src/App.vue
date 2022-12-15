@@ -13,7 +13,9 @@ export default {
 <template>
   <TheHeader />
 
-  <router-view />
+  <main class="pt-14 pb-[100px]">
+    <router-view />
+  </main>
 
   <TheFooter />
 </template>

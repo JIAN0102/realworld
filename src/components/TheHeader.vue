@@ -3,6 +3,11 @@ import { mapState } from 'pinia';
 import { useUserStore } from '@/stores/user';
 
 export default {
+  data() {
+    return {
+      isMenuOpen: false,
+    };
+  },
   computed: {
     ...mapState(useUserStore, ['currentUser', 'isLoggedIn']),
   },
@@ -10,7 +15,7 @@ export default {
 </script>
 
 <template>
-  <nav>
+  <nav class="fixed top-0 left-0 z-[999] w-full bg-white">
     <div class="max-w-[1140px] px-[15px] mx-auto">
       <div class="flex justify-between items-center h-14">
         <router-link
@@ -21,10 +26,13 @@ export default {
         >
           conduit
         </router-link>
-        <ul class="flex space-x-4">
-          <li>
+        <ul
+          class="fixed top-14 left-0 w-full bg-white md:static md:flex md:gap-x-4 md:w-auto md:mx-0"
+          :class="isMenuOpen ? 'block' : 'hidden'"
+        >
+          <li class="border-t border-black/10 md:border-0">
             <router-link
-              class="block hover:text-black/60"
+              class="block px-[15px] py-2.5 md:p-0 hover:text-black/60"
               :class="{
                 'text-black/30': $route.name !== 'global-feed',
                 'text-black/80': $route.name === 'global-feed',
@@ -37,9 +45,9 @@ export default {
             </router-link>
           </li>
           <template v-if="isLoggedIn">
-            <li>
+            <li class="border-t border-black/10 md:border-0">
               <router-link
-                class="block hover:text-black/60"
+                class="block px-[15px] py-2.5 md:p-0 hover:text-black/60"
                 :class="{
                   'text-black/30': $route.name !== 'create-article',
                   'text-black/80': $route.name === 'create-article',
@@ -51,9 +59,9 @@ export default {
                 <i class="ion-compose"></i>&nbsp;New Article
               </router-link>
             </li>
-            <li>
+            <li class="border-t border-black/10 md:border-0">
               <router-link
-                class="block hover:text-black/60"
+                class="block px-[15px] py-2.5 md:p-0 hover:text-black/60"
                 :class="{
                   'text-black/30': $route.name !== 'settings',
                   'text-black/80': $route.name === 'settings',
@@ -65,9 +73,9 @@ export default {
                 <i class="ion-gear-a"></i>&nbsp;Settings
               </router-link>
             </li>
-            <li>
+            <li class="border-t border-black/10 md:border-0">
               <router-link
-                class="flex items-center hover:text-black/60"
+                class="flex items-center px-[15px] py-2.5 md:p-0 hover:text-black/60"
                 :class="{
                   'text-black/30': $route.name !== 'profile',
                   'text-black/80': $route.name === 'profile',
@@ -89,9 +97,9 @@ export default {
             </li>
           </template>
           <template v-else>
-            <li>
+            <li class="border-t border-black/10 md:border-0">
               <router-link
-                class="block hover:text-black/60"
+                class="block px-[15px] py-2.5 md:p-0 hover:text-black/60"
                 :class="{
                   'text-black/30': $route.name !== 'login',
                   'text-black/80': $route.name === 'login',
@@ -103,9 +111,9 @@ export default {
                 Sign in
               </router-link>
             </li>
-            <li>
+            <li class="border-t border-black/10 md:border-0">
               <router-link
-                class="block hover:text-black/60"
+                class="block px-[15px] py-2.5 md:p-0 hover:text-black/60"
                 :class="{
                   'text-black/30': $route.name !== 'register',
                   'text-black/80': $route.name === 'register',
@@ -119,6 +127,21 @@ export default {
             </li>
           </template>
         </ul>
+        <button
+          class="relative w-10 h-10 md:hidden"
+          type="button"
+          @click="isMenuOpen = !isMenuOpen"
+        >
+          <span
+            class="absolute top-3 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#333]"
+          ></span>
+          <span
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-0.5 bg-[#333]"
+          ></span>
+          <span
+            class="absolute bottom-3 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#333]"
+          ></span>
+        </button>
       </div>
     </div>
   </nav>

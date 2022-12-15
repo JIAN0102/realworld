@@ -16,13 +16,13 @@ export default {
   },
   async beforeRouteEnter(to, from, next) {
     try {
-      const res = await Promise.all([
+      const [article, comments] = await Promise.all([
         getArticle(to.params.slug),
         getComments(to.params.slug),
       ]);
       next((vm) => {
-        vm.article = res[0].data.article;
-        vm.comments = res[1].data.comments;
+        vm.article = article.data.article;
+        vm.comments = comments.data.comments;
       });
       return;
     } catch (error) {

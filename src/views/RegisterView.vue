@@ -51,7 +51,7 @@ export default {
           >
         </div>
 
-        <ul v-if="errors" class="error-messages">
+        <ul v-if="errors" class="pl-10 mb-4 list-disc font-bold text-[#b85c5c]">
           <li v-for="(error, field) in errors" :key="field">
             {{ field }} {{ error ? error[0] : '' }}
           </li>
@@ -62,7 +62,7 @@ export default {
             <fieldset>
               <input
                 v-model="user.username"
-                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999]"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:cursor-not-allowed"
                 type="text"
                 placeholder="Your Name"
               />
@@ -70,7 +70,7 @@ export default {
             <fieldset>
               <input
                 v-model="user.email"
-                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999]"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:cursor-not-allowed"
                 type="text"
                 placeholder="Email"
               />
@@ -78,18 +78,20 @@ export default {
             <fieldset>
               <input
                 v-model="user.password"
-                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999]"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:cursor-not-allowed"
                 type="password"
                 placeholder="Password"
               />
             </fieldset>
-            <button
-              class="btn btn-lg btn-primary pull-xs-right"
-              type="button"
-              @click="onSubmit"
-            >
-              Sign up
-            </button>
+            <div class="text-right">
+              <button
+                class="inline-block px-6 py-3 text-xl text-white leading-tight bg-primary rounded"
+                type="button"
+                @click="onSubmit"
+              >
+                Sign up
+              </button>
+            </div>
           </fieldset>
         </form>
       </div>

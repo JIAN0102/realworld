@@ -12,7 +12,8 @@ export default {
   data() {
     return {
       isLoading: false,
-      profile: null,
+      isFollowing: false,
+      profile: {},
     };
   },
   computed: {
@@ -34,7 +35,7 @@ export default {
   methods: {
     async fetchProfile() {
       this.isLoading = true;
-      this.profile = null;
+      this.profile = {};
 
       try {
         const res = await getProfile(this.$route.params.username);
@@ -52,6 +53,8 @@ export default {
         });
       }
 
+      this.isFollowing = true;
+
       try {
         const res = this.profile.following
           ? await unfollowProfile(this.profile.username)
@@ -60,6 +63,8 @@ export default {
       } catch (error) {
         console.log(error);
       }
+
+      this.isFollowing = false;
     },
   },
 };
@@ -71,35 +76,34 @@ export default {
       <div class="md:w-10/12 md:mx-auto">
         <div v-if="isLoading">Loading profile...</div>
         <template v-else>
-          <template v-if="profile">
-            <img
-              class="w-[100px] h-[100px] mx-auto rounded-full"
-              :src="profile.image"
-            />
-            <div class="mt-4 text-center">
-              <h4 class="font-bold text-2xl">{{ profile.username }}</h4>
-              <p class="mt-1 font-light text-[#aaa]">{{ profile.bio }}</p>
-            </div>
-            <div class="mt-2 text-right">
-              <router-link
-                v-if="isCurrentUser"
-                class="inline-block px-2 py-1 text-sm text-[#999] leading-tight border border-[#999] rounded hover:bg-[#ccc]"
-                :to="{ name: 'settings' }"
-              >
-                <i class="ion-gear-a"></i> Edit Profile Settings
-              </router-link>
-              <button
-                v-else
-                class="inline-block px-2 py-1 text-sm text-[#999] leading-tight border border-[#999] rounded hover:bg-[#ccc] disabled:cursor-not-allowed disabled:opacity-60"
-                :class="{ 'text-[#373a3c] bg-white': profile.following }"
-                @click="toggleFollow"
-              >
-                <i class="ion-plus-round"></i>
-                &nbsp; {{ profile.following ? 'Unfollow' : 'Follow' }}
-                {{ profile.username }}
-              </button>
-            </div>
-          </template>
+          <img
+            class="w-[100px] h-[100px] mx-auto rounded-full"
+            :src="profile.image"
+          />
+          <div class="mt-4 text-center">
+            <h4 class="font-bold text-2xl">{{ profile.username }}</h4>
+            <p class="mt-1 font-light text-[#aaa]">{{ profile.bio }}</p>
+          </div>
+          <div class="mt-2 text-right">
+            <router-link
+              v-if="isCurrentUser"
+              class="inline-block px-2 py-1 text-sm text-[#999] leading-tight border border-[#999] rounded hover:bg-[#ccc]"
+              :to="{ name: 'settings' }"
+            >
+              <i class="ion-gear-a"></i> Edit Profile Settings
+            </router-link>
+            <button
+              v-else
+              class="inline-block px-2 py-1 text-sm text-[#999] leading-tight border border-[#999] rounded hover:bg-[#ccc] disabled:cursor-not-allowed disabled:opacity-60"
+              :class="{ 'text-[#373a3c] bg-white': profile.following }"
+              :disabled="isFollowing"
+              @click="toggleFollow"
+            >
+              <i class="ion-plus-round"></i>
+              &nbsp; {{ profile.following ? 'Unfollow' : 'Follow' }}
+              {{ profile.username }}
+            </button>
+          </div>
         </template>
       </div>
     </div>
