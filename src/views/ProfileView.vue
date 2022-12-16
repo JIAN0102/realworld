@@ -112,41 +112,38 @@ export default {
   <div class="pt-6">
     <div class="max-w-[1140px] px-[15px] mx-auto">
       <div class="md:w-10/12 md:mx-auto">
-        <div class="articles-toggle">
-          <ul class="flex">
-            <li>
-              <router-link
-                class="block px-4 py-2 border-b-2"
-                :class="
-                  $route.name === 'profile'
-                    ? 'text-primary border-primary'
-                    : 'text-[#aaa] border-transparent'
-                "
-                :to="{
-                  name: 'profile',
-                }"
-              >
-                My Articles
-              </router-link>
-            </li>
-            <li>
-              <router-link
-                class="block px-4 py-2 border-b-2"
-                :class="
-                  $route.name === 'profile-favorites'
-                    ? 'text-primary border-primary'
-                    : 'text-[#aaa] border-transparent'
-                "
-                :to="{
-                  name: 'profile-favorites',
-                }"
-              >
-                Favorited Articles
-              </router-link>
-            </li>
-          </ul>
-        </div>
-
+        <ul class="flex">
+          <li>
+            <router-link
+              class="block px-4 py-2 border-b-2"
+              :class="
+                $route.name === 'profile'
+                  ? 'text-primary border-primary'
+                  : 'text-[#aaa] border-transparent'
+              "
+              :to="{
+                name: 'profile',
+              }"
+            >
+              My Articles
+            </router-link>
+          </li>
+          <li>
+            <router-link
+              class="block px-4 py-2 border-b-2"
+              :class="
+                $route.name === 'profile-favorites'
+                  ? 'text-primary border-primary'
+                  : 'text-[#aaa] border-transparent'
+              "
+              :to="{
+                name: 'profile-favorites',
+              }"
+            >
+              Favorited Articles
+            </router-link>
+          </li>
+        </ul>
         <ArticleList />
       </div>
     </div>
