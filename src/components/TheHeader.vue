@@ -11,6 +11,11 @@ export default {
   computed: {
     ...mapState(useUserStore, ['currentUser', 'isLoggedIn']),
   },
+  watch: {
+    $route() {
+      this.isMenuOpen = false;
+    },
+  },
 };
 </script>
 
@@ -27,7 +32,7 @@ export default {
           conduit
         </router-link>
         <ul
-          class="fixed top-14 left-0 w-full bg-white md:static md:flex md:gap-x-4 md:w-auto md:mx-0"
+          class="fixed top-14 left-0 w-full bg-white md:static md:flex md:gap-x-4 md:w-auto"
           :class="isMenuOpen ? 'block' : 'hidden'"
         >
           <li class="border-t border-black/10 md:border-0">
@@ -133,13 +138,20 @@ export default {
           @click="isMenuOpen = !isMenuOpen"
         >
           <span
-            class="absolute top-3 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#333]"
+            class="absolute left-1/2 -translate-x-1/2 w-6 h-0.5 bg-[#333]"
+            :class="
+              isMenuOpen ? 'top-1/2  -translate-y-1/2 rotate-45' : 'top-3'
+            "
           ></span>
           <span
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-0.5 bg-[#333]"
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-0.5 bg-[#333]"
+            :class="{ 'opacity-0': isMenuOpen }"
           ></span>
           <span
-            class="absolute bottom-3 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#333]"
+            class="absolute left-1/2 -translate-x-1/2 w-6 h-0.5 bg-[#333]"
+            :class="
+              isMenuOpen ? 'bottom-1/2  translate-y-1/2 -rotate-45' : 'bottom-3'
+            "
           ></span>
         </button>
       </div>

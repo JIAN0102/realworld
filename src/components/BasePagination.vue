@@ -80,7 +80,7 @@ export default {
 </script>
 
 <template>
-  <ul class="flex">
+  <ul class="flex mt-4">
     <li v-for="page in calculatePage" :key="page">
       <a
         :aria-label="`Go to page ${page}`"

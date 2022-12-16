@@ -113,7 +113,7 @@ export default {
             </fieldset>
             <div class="text-right">
               <button
-                class="inline-block px-6 py-3 text-xl text-white leading-tight bg-primary rounded"
+                class="inline-block px-6 py-3 text-xl text-white leading-tight bg-primary rounded hover:bg-primary-dark"
                 type="button"
                 @click="onSubmit"
               >
@@ -124,7 +124,7 @@ export default {
         </form>
         <div class="pt-4 mt-4 border-t border-black/10">
           <button
-            class="inline-block px-4 py-2 text-[#b85c5c] leading-tight border border-[#b85c5c] rounded hover:text-white hover:bg-[#b85c5c]"
+            class="inline-block px-4 py-2 text-danger leading-tight border border-danger rounded hover:text-white hover:bg-danger"
             @click.prevent="logout"
           >
             Or click here to logout.

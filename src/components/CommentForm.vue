@@ -42,7 +42,7 @@ export default {
   <form class="border border-[#e5e5e5] rounded">
     <textarea
       v-model.trim="content"
-      class="block w-full p-5 text-[#55595c] leading-tight bg-white rounded outline-none"
+      class="block w-full p-5 text-[#55595c] leading-tight bg-white rounded outline-none disabled:bg-[#eceeef] disabled:cursor-not-allowed"
       placeholder="Write a comment..."
       rows="3"
       :disabled="isLoading"
@@ -52,7 +52,7 @@ export default {
     >
       <img class="w-[30px] h-[30px] rounded-full" :src="currentUser.image" />
       <button
-        class="inline-block px-2 py-1 text-sm text-white bg-primary rounded"
+        class="inline-block px-2 py-1 text-sm text-white bg-primary rounded hover:bg-primary-dark"
         type="button"
         :disabled="isLoading || content === ''"
         @click="onSubmit"

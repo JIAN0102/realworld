@@ -88,8 +88,8 @@ export default {
 </script>
 
 <template>
-  <div class="flex items-center">
-    <div class="flex items-center mr-6">
+  <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
+    <div class="flex items-center gap-x-2">
       <router-link
         :to="{
           name: 'profile',
@@ -104,7 +104,7 @@ export default {
           :alt="article.author.username"
         />
       </router-link>
-      <div class="ml-2">
+      <div>
         <router-link
           class="block font-medium"
           :to="{
@@ -119,7 +119,7 @@ export default {
         <span class="block text-xs text-[#bbb]">{{ formatCreatedAt }}</span>
       </div>
     </div>
-    <div class="flex gap-x-2">
+    <div class="flex flex-wrap gap-x-2 gap-y-2">
       <template v-if="isCurrentUser">
         <router-link
           aria-label="Edit article"
@@ -135,7 +135,7 @@ export default {
         </router-link>
         <button
           aria-label="Delete article"
-          class="inline-block px-2 py-1 text-sm text-[#b85c5c] leading-tight border border-[#b85c5c] rounded hover:text-white hover:bg-[#b85c5c]"
+          class="inline-block px-2 py-1 text-sm text-danger leading-tight border border-danger rounded hover:text-white hover:bg-danger"
           type="button"
           :disabled="isDeleting"
           @click="handleClick"

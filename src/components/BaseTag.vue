@@ -22,7 +22,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="isLoading">Loading tags...</div>
+  <div v-if="isLoading" class="py-6">Loading tags...</div>
   <template v-else>
     <div class="flex flex-wrap gap-1 mt-1">
       <router-link

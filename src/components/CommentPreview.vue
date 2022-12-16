@@ -56,7 +56,7 @@ export default {
     <div
       class="flex justify-between items-center px-5 py-3 text-sm border-t bg-[#f5f5f5] border-[#e5e5e5]"
     >
-      <div class="flex items-center">
+      <div class="flex items-center gap-x-2">
         <router-link
           :to="{
             name: 'profile',
@@ -72,7 +72,7 @@ export default {
           />
         </router-link>
         <router-link
-          class="ml-2 text-primary"
+          class="text-primary"
           :to="{
             name: 'profile',
             params: {
@@ -82,7 +82,7 @@ export default {
         >
           {{ comment.author.username }}
         </router-link>
-        <span class="ml-1 text-[#bbb]">{{ formatCreatedAt }}</span>
+        <span class="text-[#bbb]">{{ formatCreatedAt }}</span>
       </div>
       <span
         v-if="isCurrentUser"

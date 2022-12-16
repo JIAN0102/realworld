@@ -50,8 +50,8 @@ export default {
 
 <template>
   <div class="py-6 border-t border-black/10">
-    <div class="flex justify-between items-center mb-4">
-      <div class="flex items-center mr-4">
+    <div class="flex justify-between items-center gap-x-4">
+      <div class="flex items-center gap-x-2">
         <router-link
           :to="{
             name: 'profile',
@@ -66,7 +66,7 @@ export default {
             :alt="article.author.username"
           />
         </router-link>
-        <div class="ml-2">
+        <div>
           <router-link
             class="block font-medium text-primary"
             :to="{
@@ -94,6 +94,7 @@ export default {
       </button>
     </div>
     <router-link
+      class="block mt-4"
       :to="{
         name: 'article',
         params: {
@@ -101,13 +102,15 @@ export default {
         },
       }"
     >
-      <h2 class="mb-1 font-semibold text-2xl leading-[1.1]">
+      <h2 class="font-semibold text-2xl leading-[1.1]">
         {{ article.title }}
       </h2>
-      <p class="mb-4 font-light text-[#999]">{{ article.description }}</p>
-      <div class="flex flex-wrap">
-        <span>Read more...</span>
-        <ul class="flex flex-wrap justify-end flex-1 gap-1 ml-4">
+      <p class="mt-1 font-light text-[#999]">{{ article.description }}</p>
+      <div class="flex justify-between gap-x-4 mt-4">
+        <span class="shrink-0 font-light text-sm text-[#bbb]"
+          >Read more...</span
+        >
+        <ul class="flex flex-wrap gap-1">
           <li
             v-for="(tag, index) of article.tagList"
             :key="index"

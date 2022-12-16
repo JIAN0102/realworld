@@ -17,10 +17,10 @@ export default {
 </script>
 
 <template>
-  <div class="p-8 text-white text-center bg-primary">
+  <div class="py-8 text-white text-center bg-primary">
     <div class="max-w-[1140px] px-[15px] mx-auto">
-      <h1 class="mb-2 font-titillium text-[56px] leading-[1.1]">conduit</h1>
-      <p class="font-light text-2xl">A place to share your knowledge.</p>
+      <h1 class="font-titillium text-[56px] leading-none">conduit</h1>
+      <p class="mt-2 font-light text-2xl">A place to share your knowledge.</p>
     </div>
   </div>
 

@@ -90,12 +90,14 @@ export default {
       No articles are here... yet.
     </div>
     <template v-else>
-      <ArticlePreview
-        v-for="article in articles"
-        :key="article.slug"
-        :article="article"
-        @update-article-favorite="updateArticleFavorite"
-      />
+      <ul>
+        <li v-for="article in articles" :key="article.slug">
+          <ArticlePreview
+            :article="article"
+            @update-article-favorite="updateArticleFavorite"
+          />
+        </li>
+      </ul>
       <BasePagination
         :count="articlesCount"
         :current-page="currentPage"

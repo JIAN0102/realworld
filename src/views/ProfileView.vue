@@ -81,7 +81,7 @@ export default {
             :src="profile.image"
           />
           <div class="mt-4 text-center">
-            <h4 class="font-bold text-2xl">{{ profile.username }}</h4>
+            <h1 class="font-bold text-2xl">{{ profile.username }}</h1>
             <p class="mt-1 font-light text-[#aaa]">{{ profile.bio }}</p>
           </div>
           <div class="mt-2 text-right">

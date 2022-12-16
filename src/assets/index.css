@@ -5,5 +5,7 @@
 @layer base {
   :root {
     --color-primary: 92 184 92;
+    --color-primary-dark: 68 157 68;
+    --color-danger: 184 92 92;
   }
 }

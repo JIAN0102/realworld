@@ -65,10 +65,9 @@ export default {
 <template>
   <div class="py-8 text-white bg-[#333]">
     <div class="max-w-[1140px] px-[15px] mx-auto">
-      <h1 class="mb-8 font-semibold text-[44px] leading-[1.1]">
+      <h1 class="mb-8 font-semibold text-[44px] leading-none">
         {{ article.title }}
       </h1>
-
       <ArticleMeta
         v-if="Object.keys(article).length"
         :article="article"
@@ -80,36 +79,34 @@ export default {
 
   <div class="pt-8">
     <div class="max-w-[1140px] px-[15px] mx-auto">
-      <div class="row article-content">
-        <div class="font-serif text-lg">
-          {{ article.body }}
-        </div>
-        <ul class="flex gap-1 mt-8">
-          <li v-for="(tag, index) of article.tagList" :key="tag + index">
-            <router-link
-              class="px-2 font-light text-sm text-[#aaa] border border-[#ddd] rounded-full"
-              :to="{
-                name: 'tag',
-                params: {
-                  tag: tag,
-                },
-              }"
-            >
-              {{ tag }}
-            </router-link>
-          </li>
-        </ul>
+      <div class="font-serif text-lg">
+        {{ article.body }}
       </div>
-
+      <ul class="flex gap-1 mt-8">
+        <li v-for="(tag, index) of article.tagList" :key="tag + index">
+          <router-link
+            class="px-2 font-light text-sm text-[#aaa] border border-[#ddd] rounded-full"
+            :to="{
+              name: 'tag',
+              params: {
+                tag: tag,
+              },
+            }"
+          >
+            {{ tag }}
+          </router-link>
+        </li>
+      </ul>
       <div class="pt-6 mt-8 mb-12 border-t border-black/10">
-        <ArticleMeta
-          v-if="Object.keys(article).length"
-          :article="article"
-          @update-follow="updateArticleFollowing"
-          @update-favorite="updateArticleFavorite"
-        />
+        <div class="flex justify-center">
+          <ArticleMeta
+            v-if="Object.keys(article).length"
+            :article="article"
+            @update-follow="updateArticleFollowing"
+            @update-favorite="updateArticleFavorite"
+          />
+        </div>
       </div>
-
       <div class="space-y-3 md:w-2/3 md:mx-auto">
         <CommentForm v-if="isLoggedIn" @create-comment="createComment" />
         <p v-else>
@@ -118,7 +115,6 @@ export default {
           <router-link :to="{ name: 'register' }"> sign up </router-link>
           to add comments on this article.
         </p>
-
         <CommentPreview
           v-for="comment in sortedComments"
           :key="comment.id"

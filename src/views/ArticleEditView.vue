@@ -81,12 +81,11 @@ export default {
   <div class="pt-6">
     <div class="max-w-[1140px] px-[15px] mx-auto">
       <div class="md:w-10/12 md:mx-auto">
-        <ul v-if="errors" class="pl-10 mb-4 list-disc font-bold text-[#b85c5c]">
+        <ul v-if="errors" class="pl-10 mb-4 list-disc font-bold text-danger">
           <li v-for="(error, field) in errors" :key="field">
             {{ field }} {{ error ? error[0] : '' }}
           </li>
         </ul>
-
         <form>
           <fieldset :disabled="isLoading" class="space-y-4">
             <fieldset>
@@ -121,7 +120,10 @@ export default {
                 placeholder="Enter tags"
                 @keypress.enter.prevent="createArticleTag(tagInput)"
               />
-              <div class="flex flex-wrap gap-1 mt-2">
+              <div
+                v-if="article.tagList.length"
+                class="flex flex-wrap gap-1 mt-2"
+              >
                 <span
                   v-for="(tag, index) of article.tagList"
                   :key="tag + index"
@@ -137,7 +139,7 @@ export default {
             </fieldset>
             <div class="text-right">
               <button
-                class="inline-block px-6 py-3 text-xl text-white leading-tight bg-primary rounded"
+                class="inline-block px-6 py-3 text-xl text-white leading-tight bg-primary rounded hover:bg-primary-dark"
                 type="button"
                 @click="onSubmit"
               >

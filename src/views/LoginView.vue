@@ -50,7 +50,7 @@ export default {
           >
         </div>
 
-        <ul v-if="errors" class="pl-10 mb-4 list-disc font-bold text-[#b85c5c]">
+        <ul v-if="errors" class="pl-10 mb-4 list-disc font-bold text-danger">
           <li v-for="(error, field) in errors" :key="field">
             {{ field }} {{ error ? error[0] : '' }}
           </li>
@@ -76,7 +76,7 @@ export default {
             </fieldset>
             <div class="text-right">
               <button
-                class="inline-block px-6 py-3 text-xl text-white leading-tight bg-primary rounded"
+                class="inline-block px-6 py-3 text-xl text-white leading-tight bg-primary rounded hover:bg-primary-dark"
                 type="button"
                 @click="onSubmit"
               >
