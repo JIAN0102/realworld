@@ -82,7 +82,7 @@ export default {
         </div>
       </div>
       <button
-        class="inline-block px-2 py-1 text-sm leading-tight border border-primary rounded hover:text-white hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
+        class="inline-block px-2 py-1 text-sm leading-tight border border-primary rounded hover:text-white hover:bg-primary disabled:pointer-events-none disabled:opacity-60"
         :class="{
           'text-white bg-primary': article.favorited,
           'text-primary': !article.favorited,

@@ -12,8 +12,10 @@ export default {
     ...mapState(useUserStore, ['currentUser', 'isLoggedIn']),
   },
   watch: {
-    $route() {
-      this.isMenuOpen = false;
+    $route: {
+      handler() {
+        this.isMenuOpen = false;
+      },
     },
   },
 };

@@ -61,7 +61,7 @@ export default {
             <fieldset>
               <input
                 v-model="user.email"
-                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:cursor-not-allowed"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:pointer-events-none"
                 type="text"
                 placeholder="Email"
               />
@@ -69,7 +69,7 @@ export default {
             <fieldset>
               <input
                 v-model="user.password"
-                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:cursor-not-allowed"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:pointer-events-none"
                 type="password"
                 placeholder="Password"
               />

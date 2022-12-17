@@ -92,7 +92,7 @@ export default {
               <input
                 v-model="article.title"
                 type="text"
-                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:cursor-not-allowed"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:pointer-events-none"
                 placeholder="Article Title"
               />
             </fieldset>
@@ -100,14 +100,14 @@ export default {
               <input
                 v-model="article.description"
                 type="text"
-                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:cursor-not-allowed"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:pointer-events-none"
                 placeholder="What's this article about?"
               />
             </fieldset>
             <fieldset class="form-group">
               <textarea
                 v-model="article.body"
-                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:cursor-not-allowed"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:pointer-events-none"
                 rows="8"
                 placeholder="Write your article (in markdown)"
               ></textarea>
@@ -116,7 +116,7 @@ export default {
               <input
                 v-model="tagInput"
                 type="text"
-                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:cursor-not-allowed"
+                class="block w-full px-6 py-3 text-xl text-[#55595c] leading-tight bg-white border border-black/15 rounded outline-none placeholder:text-[#999] disabled:bg-[#eceeef] disabled:pointer-events-none"
                 placeholder="Enter tags"
                 @keypress.enter.prevent="createArticleTag(tagInput)"
               />

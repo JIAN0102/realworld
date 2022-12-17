@@ -145,7 +145,7 @@ export default {
       </template>
       <template v-else>
         <button
-          class="inline-block px-2 py-1 text-sm leading-tight border border-[#ccc] rounded hover:text-[#373a3c] hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
+          class="inline-block px-2 py-1 text-sm leading-tight border border-[#ccc] rounded hover:text-[#373a3c] hover:bg-white disabled:pointer-events-none disabled:opacity-60"
           :class="
             article.author.following ? 'text-[#373a3c] bg-white' : 'text-[#ccc]'
           "
@@ -157,7 +157,7 @@ export default {
           {{ article.author.username }}
         </button>
         <button
-          class="inline-block px-2 py-1 text-sm leading-tight border border-primary rounded hover:text-white hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
+          class="inline-block px-2 py-1 text-sm leading-tight border border-primary rounded hover:text-white hover:bg-primary disabled:pointer-events-none disabled:opacity-60"
           :class="article.favorited ? 'text-white bg-primary' : 'text-primary'"
           :disabled="isFavoriting"
           @click="toggleFavorite"

@@ -94,7 +94,7 @@ export default {
             </router-link>
             <button
               v-else
-              class="inline-block px-2 py-1 text-sm text-[#999] leading-tight border border-[#999] rounded hover:bg-[#ccc] disabled:cursor-not-allowed disabled:opacity-60"
+              class="inline-block px-2 py-1 text-sm text-[#999] leading-tight border border-[#999] rounded hover:bg-[#ccc] disabled:pointer-events-none disabled:opacity-60"
               :class="{ 'text-[#373a3c] bg-white': profile.following }"
               :disabled="isFollowing"
               @click="toggleFollow"
