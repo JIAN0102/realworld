@@ -13,7 +13,7 @@ export default {
 <template>
   <TheHeader />
 
-  <main class="pt-14 pb-[100px]">
+  <main class="min-h-[calc(100vh-3.5rem)] py-14">
     <router-view />
   </main>
 

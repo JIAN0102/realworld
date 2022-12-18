@@ -1,5 +1,5 @@
 <template>
-  <footer class="absolute bottom-0 left-0 w-full py-4 bg-[#f3f3f3]">
+  <footer class="py-4 bg-[#f3f3f3]">
     <div class="max-w-[1140px] px-[15px] mx-auto">
       <router-link
         :to="{ name: 'global-feed' }"
