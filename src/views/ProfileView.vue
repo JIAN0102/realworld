@@ -77,7 +77,7 @@ export default {
         <div v-if="isLoading">Loading profile...</div>
         <template v-else>
           <img
-            class="w-[100px] h-[100px] mx-auto rounded-full"
+            class="w-[100px] h-[100px] mx-auto rounded-full object-cover"
             :src="profile.image"
           />
           <div class="mt-4 text-center">

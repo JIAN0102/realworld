@@ -82,7 +82,7 @@ export default {
             </li>
             <li class="border-t border-black/10 md:border-0">
               <router-link
-                class="flex items-center px-[15px] py-2.5 md:p-0 hover:text-black/60"
+                class="flex items-center gap-x-1 px-[15px] py-2.5 md:p-0 hover:text-black/60"
                 :class="{
                   'text-black/30': $route.name !== 'profile',
                   'text-black/80': $route.name === 'profile',
@@ -95,7 +95,7 @@ export default {
                 }"
               >
                 <img
-                  class="w-6 h-6 mr-1 rounded-full"
+                  class="w-6 h-6 rounded-full object-cover"
                   :src="currentUser.image"
                   :alt="currentUser.username"
                 />
